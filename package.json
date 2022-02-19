@@ -1,0 +1,22 @@
+{
+  "name": "enviservice",
+  "version": "1.0.0",
+  "description": "enviservice page",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dookda/enviservice.git"
+  },
+  "keywords": [
+    "enviservice"
+  ],
+  "author": "sakda homhuan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dookda/enviservice/issues"
+  },
+  "homepage": "https://github.com/dookda/enviservice#readme"
+}
