@@ -31,3 +31,6 @@ app.use('/', express.static('www'))
 app.listen(port, () => {
     console.log(`http://localhost:${port}`);
 })
+
+const api = require('./service/app');
+app.use(api);
