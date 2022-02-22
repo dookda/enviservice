@@ -2,5 +2,24 @@
 /* font-family: 'Kanit', sans-serif; */
 
 body{
-    font-family: 'IBM Plex Sans Thai', sans-serif;
+    font-family: 'Kanit', sans-serif;
+}
+
+.py-8 {
+    padding-top: 7.5rem !important;
+    padding-bottom: 4rem !important;
+}
+
+.card-img, .card-img-top, .card-img-bottom {
+    /* width: 70% !important; */
+    display:inline;
+}
+
+.w-100{
+    width: 100% !important;
+    border-radius: 5% !important;
+}
+
+pt-10{
+    padding-top: 10px;
 }
