@@ -2,7 +2,7 @@ const express = require('express');
 const app = express.Router();
 
 const con = require("./db");
-const db = con.dat;
+const db = con.db;
 
 
 app.post("/api/insert", async (req, res) => {
