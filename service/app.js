@@ -51,5 +51,41 @@ app.post("/api/getdetail", (req, res) => {
     })
 });
 
+app.post("/api/chkadmin", (req, res) => {
+    const { usrid } = req.body;
+    const sql = `SELECT * FROM usertb WHERE usrid='${usrid}'`;
+    db.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+})
+
+app.post("/api/updateuser", (req, res) => {
+    const { usrid, data } = req.body;
+    const sql = `SELECT * FROM usertb WHERE usrid='${usrid}'`;
+    let d;
+    db.query(sql).then(r => {
+        if (r.rows.length > 0) {
+            for (d in data) {
+                if (data[d] !== '') {
+                    let sql = `UPDATE usertb SET ${d}='${data[d]}', ts=now() WHERE usrid='${usrid}'`;
+                    db.query(sql)
+                }
+            }
+        } else {
+            db.query(`INSERT INTO usertb(usrid, ts)VALUES('${usrid}', now())`).then(() => {
+                for (d in data) {
+                    if (data[d] !== '') {
+                        let sql = `UPDATE usertb SET ${d}='${data[d]}', ts=now() WHERE usrid='${usrid}'`;
+                        db.query(sql)
+                    }
+                }
+            })
+        }
+        res.status(200).json({ data: "success" })
+    })
+})
+
 
 module.exports = app;
