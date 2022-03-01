@@ -1,6 +1,6 @@
 function initializeLiff() {
     liff.init({
-        liffId: "1656619414-wm54OVq5"
+        liffId: "1656934660-8AB2mBrE"
     }).then((e) => {
         if (!liff.isLoggedIn()) {
             liff.login();
@@ -11,30 +11,56 @@ function initializeLiff() {
         console.log(err);
     });
 }
+var url = 'https://103c-2001-44c8-45c9-c15c-6854-2ed5-c8b7-6482.ngrok.io';
+// var url = 'http://localhost:3000'
+
+let getData = (usrid) => {
+    axios.post(url + "/api/getuser", { usrid }).then((r) => {
+        console.log(r);
+        if (r.data.data.length > 0) {
+            document.getElementById("username").value = r.data.data[0].username;
+            document.getElementById("agency").value = r.data.data[0].agency;
+            document.getElementById("email").value = r.data.data[0].email;
+            document.getElementById("tel").value = r.data.data[0].tel;
+        }
+    })
+}
+let modal = new bootstrap.Modal(document.getElementById('modal'), {
+    keyboard: false
+})
+let updateUser = () => {
+    let obj = {
+        usrid: document.getElementById("usrid").value,
+        data: {
+            username: document.getElementById("username").value,
+            agency: document.getElementById("agency").value,
+            email: document.getElementById("email").value,
+            tel: document.getElementById("tel").value,
+            displayname: document.getElementById("displayName").value
+        }
+    }
+    console.log(obj);
+    axios.post(url + "/api/updateuser", obj).then((r) => {
+        console.log(r);
+        modal.show();
+        getData(usrid)
+        setTimeout(() => {
+            modal.hide();
+        }, 2000);
+    })
+}
+
+let gotoOwnerPost = () => {
+    location.href = "./../report_owner/index.html";
+}
 
 async function getUserid() {
     const profile = await liff.getProfile();
     document.getElementById("usrid").value = await profile.userId;
-    document.getElementById("profile1").src = await profile.pictureUrl;
-    document.getElementById("displayName1").innerHTML = await profile.displayName;
-    document.getElementById("profile2").src = await profile.pictureUrl;
-    document.getElementById("displayName2").innerHTML = await profile.displayName;
-    chkAdmin(await profile.userId)
+    document.getElementById("profile").src = await profile.pictureUrl;
+    document.getElementById("displayName").value = await profile.displayName;
+    // document.getElementById("email").value = await liff.getDecodedIDToken().email;
+    console.log(profile);
+    getData(await profile.userId)
 }
-
-// var url = 'http://localhost:3000';
-// var url = 'https://thailandbioenergyhub.com:3000';
-
-let updateUser = () => {
-    let usrid = document.getElementById("usrid").value;
-    let data = {
-        sname: document.getElementById("sname").value,
-        organize: document.getElementById("organize").value,
-        tel: document.getElementById("tel").value
-    }
-    axios.post("/api/updateuser", { usrid, data }).then(r => {
-        console.log(r);
-    })
-}
-
-initializeLiff();
+initializeLiff()
