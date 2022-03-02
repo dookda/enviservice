@@ -29,39 +29,40 @@
             <h4 class="fw-bolder mb-4"></h4>
             <div class="row mt-2 d-flex align-items-center">
                 <div class="form-inner mb-5">
-                    <div class="text-center">
-                        <img alt="" width="150px" class="rounded mx-auto d-bloc" id="profile">
+                    <div class="float-right">
+                        <img alt="" width="50px" class="rounded" id="profile">&nbsp;&nbsp;&nbsp;<span
+                            id="displayName"></span>
                     </div>
-
+                    <hr>
                     <div class="mb-3">
                         <label class="form-label">ชื่อ-สกุล</label>
-                        <input class="form-control" type="text" id="username" placeholder="ระบุชื่อ" required="">
+                        <input class="form-control" type="text" id="owner_name" placeholder="ระบุชื่อ" required="">
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">หน่วยงาน-บริษัท</label>
-                        <input class="form-control" type="text" id="agency" placeholder="">
+                        <label class="form-label">ชื่อเครื่องมือ</label>
+                        <input class="form-control" type="text" id="product_type" placeholder="">
                     </div>
 
                     <div class="mb-3">
-                        <label>e-mail</label>
-                        <input class="form-control" type="text" id="email" placeholder="">
+                        <label class="form-label">คำอธิบายเครื่องมือ</label>
+                        <input class="form-control" type="text" id="descr" placeholder="">
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">เบอร์โทรติดต่อ</label>
-                        <input class="form-control" type="text" id="tel" placeholder="">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">LINE</label>
-                        <input class="form-control" type="text" id="displayName" disabled>
+                    <div class="default-form mt-1">
+                        <label for="img">ถ่ายภาพ</label> <br>
+                        <div class="form-group">
+                            <input type="file" accept="image/*" name="imgfile" id="imgfile">
+                            <div class="mt-3">
+                                <img src="" id="preview" width="100%">
+                            </div>
+                        </div>
                     </div>
 
                     <input type="hidden" id="usrid">
                     <div class="mb-3" id="btn">
-                        <button class="btn btn-success float-end" onclick="updateUser()"><i class="bi bi-save"></i>
-                            บันทึก</button>
+                        <button class="btn btn-success float-end" onclick="saveData()"><i class="bi bi-save"></i>
+                            จองคิวซ่อม</button>
                     </div>
 
                 </div>

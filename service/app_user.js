@@ -115,6 +115,22 @@ app.post("/api/updateuser", (req, res) => {
     })
 })
 
+app.post("/api/insertfixed", async (req, res) => {
+    const { data } = req.body;
+    let pid = Date.now()
+    await db.query(`INSERT INTO fixed(pid, ts)VALUES('${pid}', now())`)
+    let d;
+    for (d in data) {
+        if (data[d] !== '') {
+            let sql = `UPDATE fixed SET ${d}='${data[d]}' WHERE pid='${pid}'`;
+            // console.log(sql);
+            await db.query(sql)
+        }
+    }
 
+    res.status(200).json({
+        data: "success"
+    })
+})
 
 module.exports = app;

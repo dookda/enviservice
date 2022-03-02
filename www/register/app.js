@@ -41,7 +41,7 @@ let updateUser = () => {
     }
     console.log(obj);
     axios.post(url + "/api/updateuser", obj).then((r) => {
-        console.log(r);
+        // console.log(r);
         modal.show();
         getData(usrid)
         setTimeout(() => {
