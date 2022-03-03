@@ -133,4 +133,7 @@ app.post("/api/insertfixed", async (req, res) => {
     })
 })
 
+
+console.log(new Date().toUTCString());
+
 module.exports = app;
