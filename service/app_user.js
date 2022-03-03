@@ -1,3 +1,4 @@
+const { default: axios } = require('axios');
 const express = require('express');
 const app = express.Router();
 
@@ -133,7 +134,15 @@ app.post("/api/insertfixed", async (req, res) => {
     })
 })
 
-
+app.get("/api/iotdata", async (req, res) => {
+    let startDate = 'Wed,+02+Mar+2022+17:00:00+GMT';
+    let endDate = 'Thu,+03+Mar+2022+17:00:00+GMT'
+    axios.get(`http://envirservice.net/api/v1/reports/logs?device_id=25&begin_date=${startDate}&end_date=${endDate}`).then(r => {
+        // console.log(r.data.data);
+        r.data.data.map(i => console.log(i.data.split(",")[3]))
+        // res.status(200).json(r.data.data)
+    })
+})
 console.log(new Date().toUTCString());
 
 module.exports = app;
