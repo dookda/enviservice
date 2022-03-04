@@ -11,8 +11,8 @@ function initializeLiff() {
         console.log(err);
     });
 }
-var url = 'https://rti2dss.com:3510';
-// var url = 'https://103c-2001-44c8-45c9-c15c-6854-2ed5-c8b7-6482.ngrok.io'
+// var url = 'https://rti2dss.com:3510';
+var url = 'https://103c-2001-44c8-45c9-c15c-6854-2ed5-c8b7-6482.ngrok.io'
 
 
 let gotoOwnerPost = () => {
@@ -28,7 +28,7 @@ async function getUserid() {
     console.log(profile);
 }
 
-let chart = () => {
+let chart = (data) => {
     // Create root element
     // https://www.amcharts.com/docs/v5/getting-started/#Root_element
     var root = am5.Root.new("chartdiv");
@@ -56,30 +56,10 @@ let chart = () => {
     }));
     cursor.lineY.set("visible", false);
 
-    // Generate random data
-    var date = new Date();
-    date.setHours(0, 0, 0, 0);
-    var value = 100;
-
-    function generateData() {
-        value = Math.round(Math.random() * 10 - 5 + value);
-
-        am5.time.add(date, "day", 1);
-        return { date: date.getTime(), value: value };
-    }
-
-    function generateDatas(count) {
-        var data = [];
-        for (var i = 0; i < count; ++i) {
-            data.push(generateData());
-        }
-        return data;
-    }
-
     // Create axes
     // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
     var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
-        baseInterval: { timeUnit: "day", count: 1 },
+        baseInterval: { timeUnit: "second", count: 1 },
         renderer: am5xy.AxisRendererX.new(root, {}),
         tooltip: am5.Tooltip.new(root, {})
     }));
@@ -94,63 +74,144 @@ let chart = () => {
         name: "Series",
         xAxis: xAxis,
         yAxis: yAxis,
-        valueYField: "value",
-        valueXField: "date",
+        valueYField: "lmax",
+        valueXField: "dt",
         tooltip: am5.Tooltip.new(root, {
             labelText: "{valueY}"
         })
     }));
 
+    // var data = generateDatas(2000);
+    series.data.setAll(data);
+}
 
-    // Add scrollbar
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
-    var scrollbar = chart.set("scrollbarX", am5xy.XYChartScrollbar.new(root, {
-        orientation: "horizontal",
-        height: 60
+let chart2 = (data) => {
+    var root = am5.Root.new("chartdiv");
+
+
+    // Set themes
+    // https://www.amcharts.com/docs/v5/concepts/themes/
+    root.setThemes([
+        am5themes_Animated.new(root)
+    ]);
+
+    root.dateFormatter.setAll({
+        dateFormat: "yyyy",
+        dateFields: ["valueX"]
+    });
+
+    var data = data
+
+    // Create chart
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/
+    var chart = root.container.children.push(am5xy.XYChart.new(root, {
+        focusable: true,
+        panX: true,
+        panY: true,
+        wheelX: "panX",
+        wheelY: "zoomX"
     }));
 
-    var sbDateAxis = scrollbar.chart.xAxes.push(am5xy.DateAxis.new(root, {
+    var easing = am5.ease.linear;
+
+
+    // Create axes
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+    var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
+        maxDeviation: 0.1,
+        groupData: false,
         baseInterval: {
             timeUnit: "day",
             count: 1
         },
-        renderer: am5xy.AxisRendererX.new(root, {})
+        renderer: am5xy.AxisRendererX.new(root, {
+
+        }),
+        tooltip: am5.Tooltip.new(root, {})
     }));
 
-    var sbValueAxis = scrollbar.chart.yAxes.push(
-        am5xy.ValueAxis.new(root, {
-            renderer: am5xy.AxisRendererY.new(root, {})
+    var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+        maxDeviation: 0.2,
+        renderer: am5xy.AxisRendererY.new(root, {})
+    }));
+
+
+    // Add series
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+    var series = chart.series.push(am5xy.LineSeries.new(root, {
+        minBulletDistance: 10,
+        connect: false,
+        xAxis: xAxis,
+        yAxis: yAxis,
+        valueYField: "lmax",
+        valueXField: "dt",
+        tooltip: am5.Tooltip.new(root, {
+            pointerOrientation: "horizontal",
+            labelText: "{valueY}"
         })
-    );
-
-    var sbSeries = scrollbar.chart.series.push(am5xy.LineSeries.new(root, {
-        valueYField: "value",
-        valueXField: "date",
-        xAxis: sbDateAxis,
-        yAxis: sbValueAxis
     }));
 
-    var data = generateDatas(2000);
-    // console.log(data);
+    series.fills.template.setAll({
+        fillOpacity: 0.2,
+        visible: true
+    });
+
+    series.strokes.template.setAll({
+        strokeWidth: 2
+    });
+
+
+    // Set up data processor to parse string dates
+    // https://www.amcharts.com/docs/v5/concepts/data/#Pre_processing_data
+    series.data.processor = am5.DataProcessor.new(root, {
+        dateFormat: "MM-dd HH:MM:SS",
+        dateFields: ["dt"]
+    });
+
     series.data.setAll(data);
-    sbSeries.data.setAll(data);
+
+    series.bullets.push(function () {
+        var circle = am5.Circle.new(root, {
+            radius: 4,
+            fill: root.interfaceColors.get("background"),
+            stroke: series.get("fill"),
+            strokeWidth: 2
+        })
+
+        return am5.Bullet.new(root, {
+            sprite: circle
+        })
+    });
+
+
+    // Add cursor
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+    var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
+        xAxis: xAxis,
+        behavior: "none"
+    }));
+    cursor.lineY.set("visible", false);
+
+    // add scrollbar
+    chart.set("scrollbarX", am5.Scrollbar.new(root, {
+        orientation: "horizontal"
+    }));
+
 
     // Make stuff animate on load
     // https://www.amcharts.com/docs/v5/concepts/animations/
-    // series.appear(1000);
-    // chart.appear(1000, 100);
+    chart.appear(1000, 100);
 }
 
 
 let loadData = () => {
     axios.get(`/api/iotdata`).then(r => {
-
-        let a = r.data.map(i => i.data);
-        console.log(a);
+        console.log(r.data);
+        chart2(r.data)
     })
 }
 
 
 initializeLiff();
-chart();
-// loadData()
+// chart();
+loadData()

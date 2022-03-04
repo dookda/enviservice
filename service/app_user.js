@@ -135,14 +135,22 @@ app.post("/api/insertfixed", async (req, res) => {
 })
 
 app.get("/api/iotdata", async (req, res) => {
-    let startDate = 'Wed,+02+Mar+2022+17:00:00+GMT';
-    let endDate = 'Thu,+03+Mar+2022+17:00:00+GMT'
-    axios.get(`http://envirservice.net/api/v1/reports/logs?device_id=25&begin_date=${startDate}&end_date=${endDate}`).then(r => {
+    let startDate = 'Wed,+04+Mar+2022+00:00:00+GMT';
+    let endDate = 'Thu,+04+Mar+2022+17:00:00+GMT'
+    axios.get(`http://envirservice.net/api/v1/reports/logs?device_id=25&begin_date=${startDate}&end_date=${endDate}`).then(async (r) => {
         // console.log(r.data.data);
-        r.data.data.map(i => console.log(i.data.split(",")[3]))
-        // res.status(200).json(r.data.data)
-    })
-})
+        let dat = [];
+        r.data.data.map(i => {
+            // console.log(new Date(i.event));
+            let d = new Date(i.event)
+            dat.push({
+                dt: `${d.getMonth()}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+                lmax: Number(i.data.split(",")[10])
+            })
+        });
+        await res.status(200).json(dat);
+    });
+});
 console.log(new Date().toUTCString());
 
 module.exports = app;
