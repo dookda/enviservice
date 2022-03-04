@@ -28,97 +28,76 @@ async function getUserid() {
     console.log(profile);
 }
 
-let chart = (data) => {
-    // Create root element
-    // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-    var root = am5.Root.new("chartdiv");
 
-    // Set themes
-    // https://www.amcharts.com/docs/v5/concepts/themes/
-    root.setThemes([
-        am5themes_Animated.new(root)
-    ]);
+var root = am5.Root.new("chartdiv");
+root.setThemes([
+    am5themes_Animated.new(root)
+]);
+var chart = root.container.children.push(am5xy.XYChart.new(root, {
+    panX: true,
+    panY: true,
+    wheelX: "panX",
+    wheelY: "zoomX"
+}));
 
-    // Create chart
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/
-    var chart = root.container.children.push(am5xy.XYChart.new(root, {
-        panX: true,
-        panY: true,
-        wheelX: "panX",
-        wheelY: "zoomX"
-    }));
+var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
+    // behavior: "none"
+    behavior: "zoomX"
+}));
+cursor.lineY.set("visible", true);
+var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
+    baseInterval: { timeUnit: "second", count: 1 },
+    renderer: am5xy.AxisRendererX.new(root, {}),
+    tooltip: am5.Tooltip.new(root, {})
+}));
 
-    // Add cursor
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-    var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
-        // behavior: "none"
-        behavior: "zoomX"
-    }));
-    cursor.lineY.set("visible", true);
+var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+    renderer: am5xy.AxisRendererY.new(root, {})
+}));
+var series = chart.series.push(am5xy.LineSeries.new(root, {
+    name: "Series",
+    xAxis: xAxis,
+    yAxis: yAxis,
+    valueYField: "lmax",
+    valueXField: "dt",
+    tooltip: am5.Tooltip.new(root, {
+        labelText: "{valueY}"
+    })
+}));
 
-    // Create axes
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-    var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
-        baseInterval: { timeUnit: "second", count: 1 },
-        renderer: am5xy.AxisRendererX.new(root, {}),
-        tooltip: am5.Tooltip.new(root, {})
-    }));
+series.data.processor = am5.DataProcessor.new(root, {
+    dateFormat: "yyyy-MM-dd HH:mm:ss",
+    dateFields: ["dt"]
+});
 
-    var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-        renderer: am5xy.AxisRendererY.new(root, {})
-    }));
-
-    // Add series
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-    var series = chart.series.push(am5xy.LineSeries.new(root, {
-        name: "Series",
-        xAxis: xAxis,
-        yAxis: yAxis,
-        valueYField: "lmax",
-        valueXField: "dt",
-        tooltip: am5.Tooltip.new(root, {
-            labelText: "{valueY}"
-        })
-    }));
-
-    series.data.processor = am5.DataProcessor.new(root, {
-        dateFormat: "yyyy-MM-dd HH:mm:ss",
-        dateFields: ["dt"]
+series.strokes.template.setAll({ strokeWidth: 2 });
+series.bullets.push(function () {
+    var graphics = am5.Circle.new(root, {
+        strokeWidth: 2,
+        radius: 5,
+        stroke: series.get("stroke"),
+        fill: root.interfaceColors.get("background"),
     });
 
-    series.strokes.template.setAll({ strokeWidth: 2 });
-
-    // Add circle bullet
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/series/#Bullets
-    series.bullets.push(function () {
-        var graphics = am5.Circle.new(root, {
-            strokeWidth: 2,
-            radius: 5,
-            stroke: series.get("stroke"),
-            fill: root.interfaceColors.get("background"),
-        });
-
-        // graphics.adapters.add("radius", function (radius, target) {
-        //     return target.dataItem.dataContext.townSize;
-        // })
-
-        return am5.Bullet.new(root, {
-            sprite: graphics
-        });
+    return am5.Bullet.new(root, {
+        sprite: graphics
     });
+});
 
-    // var data = generateDatas(2000);
+let chart5 = (data) => {
     series.data.setAll(data);
 }
 
 let loadData = () => {
-    axios.get(`/api/iotdata`).then(r => {
-        console.log(r.data);
-        chart(r.data)
+    let dstart = document.getElementById("dstart").value;
+    let dend = document.getElementById("dend").value;
+    console.log(dstart, dend);
+    axios.post(`/api/iotdata`, { dstart, dend }).then(r => {
+        // console.log(r.data);
+        chart5(r.data)
     })
 }
 
-
 initializeLiff();
 // chart();
-loadData()
+// loadData()

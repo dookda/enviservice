@@ -34,7 +34,22 @@
                             id="displayName"></span>
                     </div>
                     <hr>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label>date start</label>
+                            <input class="form-control" type="date" id="dstart">
+                        </div>
 
+                        <div class="col mb-3">
+                            <label>date end</label>
+                            <input class="form-control" type="date" id="dend">
+                        </div>
+                    </div>
+
+                    <div class="col mb-3">
+                        <button class="btn btn-success form-contro" onclick="loadData()">ตกลง</button>
+                    </div>
+                    <hr>
                     <div id="chartdiv"></div>
                     <input type="hidden" id="usrid">
                 </div>
