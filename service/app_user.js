@@ -142,9 +142,11 @@ app.get("/api/iotdata", async (req, res) => {
         let dat = [];
         r.data.data.map(i => {
             // console.log(new Date(i.event));
-            let d = new Date(i.event)
+            let d = new Date(i.event);
+            // console.log(d, i.event);
             dat.push({
-                dt: `${d.getMonth()}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+                dt: `${d.getFullYear()}-${d.getMonth()}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+                // dat: d,
                 lmax: Number(i.data.split(",")[10])
             })
         });
