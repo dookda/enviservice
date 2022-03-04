@@ -92,7 +92,7 @@ let loadData = () => {
     let dstart = document.getElementById("dstart").value;
     let dend = document.getElementById("dend").value;
     console.log(dstart, dend);
-    axios.post(`/api/iotdata`, { dstart, dend }).then(r => {
+    axios.post(url + '/api/iotdata', { dstart, dend }).then(r => {
         // console.log(r.data);
         chart5(r.data)
     })
