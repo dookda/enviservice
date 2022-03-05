@@ -60,7 +60,30 @@ app.post("/api/getuser", (req, res) => {
             data: r.rows
         })
     })
-})
+});
+
+app.post("/api/getalluser", (req, res) => {
+    const { usrid } = req.body;
+    // console.log(usrid);
+    const sql = `SELECT * FROM usertb `;
+    db.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+});
+
+app.post("/alcohol-api/delete", (req, res) => {
+    const { gid } = req.body;
+    // console.log(gid);
+    const sql = `DELETE FROM usertb WHERE gid=${gid}`;
+    // console.log(sql);
+    db.query(sql).then(r => {
+        res.status(200).json({
+            data: "success"
+        })
+    })
+});
 
 app.post("/api/insertuser", async (req, res) => {
     const { usrid, data } = req.body;
@@ -77,7 +100,7 @@ app.post("/api/insertuser", async (req, res) => {
     res.status(200).json({
         data: "success"
     })
-})
+});
 
 app.post("/api/chkadmin", (req, res) => {
     const { usrid } = req.body;
@@ -87,7 +110,7 @@ app.post("/api/chkadmin", (req, res) => {
             data: r.rows
         })
     })
-})
+});
 
 app.post("/api/updateuser", (req, res) => {
     const { usrid, data } = req.body;
@@ -114,7 +137,7 @@ app.post("/api/updateuser", (req, res) => {
         }
         res.status(200).json({ data: "success" })
     })
-})
+});
 
 app.post("/api/insertfixed", async (req, res) => {
     const { data } = req.body;
@@ -132,7 +155,7 @@ app.post("/api/insertfixed", async (req, res) => {
     res.status(200).json({
         data: "success"
     })
-})
+});
 
 app.post("/api/iotdata", async (req, res) => {
     let { dstart, dend } = req.body;

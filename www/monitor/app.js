@@ -12,7 +12,7 @@ function initializeLiff() {
     });
 }
 var url = 'https://rti2dss.com:3510';
-// var url = 'https://103c-2001-44c8-45c9-c15c-6854-2ed5-c8b7-6482.ngrok.io'
+// var url = 'https://103c-2001-44c8-45c9-c15c-6854-2ed5-c8b7-6482.ngrok.io';
 
 
 let gotoOwnerPost = () => {
@@ -89,8 +89,8 @@ let chart5 = (data) => {
 }
 
 let loadData = () => {
-    let dstart = document.getElementById("dstart").value;
-    let dend = document.getElementById("dend").value;
+    let dstart = document.getElementById("dstart").value + "T00:00:00Z";
+    let dend = document.getElementById("dend").value + "T23:59:00Z";
     console.log(dstart, dend);
     axios.post(url + '/api/iotdata', { dstart, dend }).then(r => {
         // console.log(r.data);
