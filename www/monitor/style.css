@@ -4,6 +4,10 @@ body{
     box-sizing: 0;
 }
 
+.f18{
+    font-size: 18px;
+}
+
 .img-right{
     float:right;
     display:block;
@@ -11,5 +15,5 @@ body{
 
 #chartdiv {
     width: 100%;
-    height: 500px;
+    height: 400px;
 }

@@ -141,7 +141,7 @@ app.post("/api/updateuser", (req, res) => {
 
 app.post("/api/getdevice", (req, res) => {
     const { userid } = req.body;
-    // console.log(usrid);
+    // console.log(userid);
     const sql = `SELECT * FROM device WHERE userid='${userid}'`;
     db.query(sql).then(r => {
         res.status(200).json({
@@ -192,21 +192,25 @@ app.post("/api/insertfixed", async (req, res) => {
 });
 
 app.post("/api/iotdata", async (req, res) => {
-    let { dstart, dend } = req.body;
-    axios.get(`http://envirservice.net/api/v1/reports/logs?device_id=25&begin_date=${dstart}&end_date=${dend}`).then(async (r) => {
-        // console.log(r.data.data);
-        let dat = [];
-        r.data.data.map(i => {
-            // console.log(new Date(i.event));
-            let d = new Date(i.event);
-            console.log(i);
-            dat.push({
-                dt: `${d.getFullYear()}-${d.getMonth()}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
-                // dat: d,
-                lmax: Number(i.data.split(",")[10])
-            })
-        });
-        await res.status(200).json(dat);
+    let { device, dstart, dend } = req.body;
+    // console.log(`http://envirservice.net/api/v1/reports/logs?device_id=${device}&begin_date=${dstart}&end_date=${dend}`);
+    axios.get(`http://envirservice.net/api/v1/reports/logs?device_id=${device}&begin_date=${dstart}&end_date=${dend}`).then(async (r) => {
+        // console.log(r);
+        if (r.data.data.length > 0) {
+            let dat = [];
+            r.data.data.map(i => {
+                let d = new Date(i.event);
+                dat.push({
+                    dt: `${d.getFullYear()}-${d.getMonth()}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+                    lmax: Number(i.data.split(",")[10])
+                })
+            });
+            await res.status(200).json(dat);
+        } else {
+            res.status(200).json({
+                data: "nodata"
+            });
+        }
     });
 });
 console.log(new Date().toUTCString());

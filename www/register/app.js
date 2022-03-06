@@ -58,9 +58,9 @@ async function getUserid() {
     const profile = await liff.getProfile();
     document.getElementById("usrid").value = await profile.userId;
     document.getElementById("profile").src = await profile.pictureUrl;
-    document.getElementById("displayName").value = await profile.displayName;
+    document.getElementById("displayName").innerText = await profile.displayName;
     // document.getElementById("email").value = await liff.getDecodedIDToken().email;
-    console.log(profile);
+    // console.log(profile);
     getData(await profile.userId)
 }
 initializeLiff()

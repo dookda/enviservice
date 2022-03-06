@@ -12,7 +12,7 @@ function initializeLiff() {
     });
 }
 var url = 'https://rti2dss.com:3510';
-// var url = 'https://103c-2001-44c8-45c9-c15c-6854-2ed5-c8b7-6482.ngrok.io';
+// var url = 'https://5639-2001-44c8-45c0-1dbf-c837-b0b-3c03-df5d.ngrok.io';
 
 
 let gotoOwnerPost = () => {
@@ -25,9 +25,9 @@ async function getUserid() {
     document.getElementById("profile").src = await profile.pictureUrl;
     document.getElementById("displayName").innerText = await profile.displayName;
     // document.getElementById("email").value = await liff.getDecodedIDToken().email;
-    console.log(profile);
+    // console.log(profile);
+    deviceList()
 }
-
 
 var root = am5.Root.new("chartdiv");
 root.setThemes([
@@ -88,16 +88,63 @@ let chart5 = (data) => {
     series.data.setAll(data);
 }
 
-let loadData = () => {
-    let dstart = document.getElementById("dstart").value + "T00:00:00Z";
-    let dend = document.getElementById("dend").value + "T23:59:00Z";
-    console.log(dstart, dend);
-    axios.post(url + '/api/iotdata', { dstart, dend }).then(r => {
-        // console.log(r.data);
-        chart5(r.data)
+let getData = (device, dstart, dend) => {
+    // console.log(dstart, dend);
+    axios.post(url + '/api/iotdata', { device, dstart, dend }).then(r => {
+        console.log(r.data);
+        if (r.data.data !== "nodata") {
+            let lmax = _.maxBy(r.data, 'lmax');
+            // console.log(lmax);
+            document.getElementById("lmax").innerHTML = lmax.lmax;
+            document.getElementById("ldate").innerHTML = lmax.dt;
+            chart5(r.data)
+        } else {
+            document.getElementById("deviceNodata").innerHTML = device
+            modal.show();
+            setTimeout(() => {
+                modal.hide();
+            }, 2000);
+        }
     })
 }
 
+let loadData = () => {
+    let device = document.getElementById("device").value;
+    let dstart = document.getElementById("dstart").value + "T00:00:00Z";
+    let dend = document.getElementById("dend").value + "T23:59:00Z";
+    getData(device, dstart, dend)
+}
+let modal = new bootstrap.Modal(document.getElementById('modal'), {
+    keyboard: false
+})
+let deviceList = () => {
+    let userid = document.getElementById("usrid").value;
+    axios.post(url + "/api/getdevice", { userid }).then(r => {
+        if (r.data.data.length > 0) {
+            document.getElementById("default_device").value = r.data.data[0].device
+            r.data.data.map(i => {
+                document.getElementById("device").innerHTML += `<option value="${i.device}">อุปกรณ์หมายเลข ${i.device}</option>`
+            })
+            setTimeout(() => {
+                getInit()
+            }, 500);
+        }
+    });
+}
+
+const d = new Date();
+const getInit = () => {
+    let currentDate = d.toISOString().substring(0, 10);
+    document.getElementById('dstart').value = currentDate;
+    document.getElementById('dend').value = currentDate;
+    let device = document.getElementById("default_device").value
+    console.log(device);
+    getData(device, `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}T00:00:00Z`, `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}T23:59:00Z`);
+}
+
 initializeLiff();
-// chart();
-// loadData()
+
+
+
+
+
