@@ -73,7 +73,7 @@ app.post("/api/getalluser", (req, res) => {
     })
 });
 
-app.post("/alcohol-api/delete", (req, res) => {
+app.post("/api/delete", (req, res) => {
     const { gid } = req.body;
     // console.log(gid);
     const sql = `DELETE FROM usertb WHERE gid=${gid}`;
@@ -136,6 +136,40 @@ app.post("/api/updateuser", (req, res) => {
             })
         }
         res.status(200).json({ data: "success" })
+    })
+});
+
+app.post("/api/getdevice", (req, res) => {
+    const { userid } = req.body;
+    // console.log(usrid);
+    const sql = `SELECT * FROM device WHERE userid='${userid}'`;
+    db.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+});
+
+app.post("/api/insertdevice", (req, res) => {
+    const { userid, device } = req.body;
+    // console.log(userid);
+    const sql = `INSERT INTO device (userid, device, ts) VALUES ('${userid}', ${device}, now())`;
+    db.query(sql).then(r => {
+        res.status(200).json({
+            data: "success"
+        })
+    })
+});
+
+app.post("/api/deletedevice", (req, res) => {
+    const { gid } = req.body;
+    // console.log(gid);
+    const sql = `DELETE FROM device WHERE gid=${gid}`;
+    // console.log(sql);
+    db.query(sql).then(r => {
+        res.status(200).json({
+            data: "success"
+        })
     })
 });
 

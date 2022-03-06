@@ -33,17 +33,22 @@
       </div>
       <hr>
 
+      <div class="mb-3">
+        <label for="device" class="form-label">หมายเลขเครื่อง</label>
+        <input type="number" class="form-control" id="device">
+      </div>
+      <button class="btn btn-primary" onclick="insertData()">เพิ่่ม</button>
+
+      <hr>
       <div class="row gx-4 gx-lg-5 align-items-center">
         <table id="example" class="display nowrap" width="100%">
           <thead>
             <tr>
               <th></th>
               <th>id</th>
-              <th>ชื่อ-นามสกุล</th>
-              <th>บริษัท/หน่วยงาน</th>
-              <th>email</th>
-              <th>เบอร์ติดต่อ</th>
-              <th>สิทธิ์ใช้งาน</th>
+              <th>userid</th>
+              <th>device</th>
+              <th>ts</th>
             </tr>
           </thead>
         </table>
@@ -65,8 +70,8 @@
         </div>
         <!-- Modal body -->
         <div class="modal-body text-center">
-          <p style="font-size: 18px;">ท่านต้องการลบผู้ใช้
-            <b> id <span id="username"></span> </b> ใช่หรือไม่?
+          <p style="font-size: 18px;">ท่านต้องการลบ
+            <b> id <span id="device_id"></span> </b> ใช่หรือไม่?
             <input type="hidden" id="gid">
           </p>
         </div>

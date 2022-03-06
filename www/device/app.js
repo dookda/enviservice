@@ -1,6 +1,7 @@
+
 function initializeLiff() {
     liff.init({
-        liffId: "1656934660-MaWk0W1e"
+        liffId: "1656934660-5WqBNqgW"
     }).then((e) => {
         if (!liff.isLoggedIn()) {
             liff.login();
@@ -33,11 +34,8 @@ let gotoHome = () => {
     location.href = "./../index.html"
 }
 
-let gotoDevice = (userid) => {
-    location.href = "./../device/index.html"
-    sessionStorage.setItem("userid", userid)
-}
-
+const deviceUsrid = sessionStorage.getItem("userid")
+// console.log(deviceUsrid);
 let loadData = async () => {
     $.extend(true, $.fn.dataTable.defaults, {
         "language": {
@@ -60,27 +58,23 @@ let loadData = async () => {
     });
     let table = $('#example').DataTable({
         ajax: {
-            url: '/api/getalluser/',
+            url: url + '/api/getdevice/',
             dataSrc: 'data',
             cache: true,
             type: "POST",
-            data: { usrid: "aaa" }
+            data: { userid: deviceUsrid }
         },
         columns: [
             {
                 data: null,
                 render: function (data, type, row, meta) {
-                    return `
-                    <button onclick="gotoDevice('${data.usrid}')" class="btn btn-margin btn-warning" ><i class="bi bi-file-earmark-person"></i> กำหนดสิทธิ์</button>
-                    <button onclick="deleteData(${data.gid},'${data.username}')" class="btn btn-margin btn-danger" ><i class="bi bi-clipboard-x"></i> ลบ</button>`
+                    return `<button onclick="deleteData(${data.gid},'${data.device}')" class="btn btn-margin btn-danger" ><i class="bi bi-clipboard-x"></i> ลบ</button>`
                 },
             },
             { data: 'gid' },
-            { data: 'username' },
-            { data: 'agency' },
-            { data: 'email' },
-            { data: 'tel' },
-            { data: 'usertype' },
+            { data: 'userid' },
+            { data: 'device' },
+            { data: 'ts' },
         ],
         // dom: 'Bfrtip',
         // buttons: [
@@ -103,26 +97,34 @@ let loadData = async () => {
     }
 }
 
-let editData = (gid) => {
-    location.href = "./../edit/index.html?gid=" + gid;
+let insertData = () => {
+    // console.log(deviceUsrid);
+    let device = document.getElementById("device").value;
+    axios.post(url + "/api/insertdevice", { userid: deviceUsrid, device }).then(r => {
+        document.getElementById("device").value = "";
+        $('#example').DataTable().ajax.reload();
+    })
 }
 
-let deleteData = (gid, username) => {
+
+let deleteData = (gid, device) => {
+    console.log(device);
     $("#gid").val(gid)
-    $("#username").text(username)
+    $("#device_id").text(device)
     $("#deleteModal").modal("show")
 }
 
 let closeModal = () => {
     // $('#editModal').modal('hide')
     $('#deleteModal').modal('hide');
+    // $('#example').DataTable().ajax.reload()
 }
 
 let deleteValue = () => {
     // console.log($("#projId").val());
     $("#deleteModal").modal("hide");
     let gid = $("#gid").val();
-    axios.post("/api/delete", { gid }).then(r => {
+    axios.post(url + "/api/deletedevice", { gid }).then(r => {
         r.data.data == "success" ? closeModal() : null
         $('#example').DataTable().ajax.reload();
     })
