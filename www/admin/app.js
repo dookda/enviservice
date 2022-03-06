@@ -21,7 +21,7 @@ async function getUserid() {
 }
 
 // var url = 'https://rti2dss.com:3510';
-var url = 'https://103c-2001-44c8-45c9-c15c-6854-2ed5-c8b7-6482.ngrok.io';
+var url = 'https://5639-2001-44c8-45c0-1dbf-c837-b0b-3c03-df5d.ngrok.io';
 
 let chkAdmin = (usrid) => {
     axios.post(url + '/api/getuser', { usrid }).then((r) => {
@@ -71,7 +71,7 @@ let loadData = async () => {
                 data: null,
                 render: function (data, type, row, meta) {
                     return `
-                    <button onclick="gotoDevice('${data.usrid}')" class="btn btn-margin btn-warning" ><i class="bi bi-file-earmark-person"></i> กำหนดสิทธิ์</button>
+                    <button onclick="gotoDevice('${data.usrid}')" class="btn btn-margin btn-warning" ><i class="bi bi-file-earmark-person"></i> จัดการอุปกรณ์</button>
                     <button onclick="deleteData(${data.gid},'${data.username}')" class="btn btn-margin btn-danger" ><i class="bi bi-clipboard-x"></i> ลบ</button>`
                 },
             },
@@ -87,7 +87,8 @@ let loadData = async () => {
         //     'excel', 'print'
         // ],
         responsive: true,
-        scrollX: true
+        scrollX: true,
+        paging: false,
     });
 
     table.on('search.dt', () => {
