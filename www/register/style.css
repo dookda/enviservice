@@ -1,3 +1,5 @@
 body{
     font-family: 'Kanit', sans-serif;
+    background-color: #f8f9fa !important;
+    box-sizing: 0;
 }

@@ -30,11 +30,17 @@ let chkAdmin = (usrid) => {
     })
 }
 
+const deviceUsrid = sessionStorage.getItem("userid");
+
 let gotoHome = () => {
-    location.href = "./../index.html"
+    location.href = "./../index.html";
 }
 
-const deviceUsrid = sessionStorage.getItem("userid")
+let gotoAdmin = () => {
+    location.href = "./../admin/index.html";
+    sessionStorage.removeItem("userid");
+}
+
 // console.log(deviceUsrid);
 let loadData = async () => {
     $.extend(true, $.fn.dataTable.defaults, {
@@ -71,8 +77,8 @@ let loadData = async () => {
                     return `<button onclick="deleteData(${data.gid},'${data.device}')" class="btn btn-margin btn-danger" ><i class="bi bi-clipboard-x"></i> ลบ</button>`
                 },
             },
-            { data: 'gid' },
-            { data: 'userid' },
+            // { data: 'gid' },
+            // { data: 'userid' },
             { data: 'device' },
             { data: 'ts' },
         ],
@@ -81,7 +87,8 @@ let loadData = async () => {
         //     'excel', 'print'
         // ],
         responsive: true,
-        scrollX: true
+        scrollX: true,
+        paging: false,
     });
 
     table.on('search.dt', () => {
@@ -105,7 +112,6 @@ let insertData = () => {
         $('#example').DataTable().ajax.reload();
     })
 }
-
 
 let deleteData = (gid, device) => {
     console.log(device);
