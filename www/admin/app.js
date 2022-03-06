@@ -61,7 +61,7 @@ let loadData = async () => {
     });
     let table = $('#example').DataTable({
         ajax: {
-            url: '/api/getalluser/',
+            url: url + '/api/getalluser/',
             dataSrc: 'data',
             cache: true,
             type: "POST",
@@ -124,7 +124,7 @@ let deleteValue = () => {
     // console.log($("#projId").val());
     $("#deleteModal").modal("hide");
     let gid = $("#gid").val();
-    axios.post("/api/delete", { gid }).then(r => {
+    axios.post(url + "/api/delete", { gid }).then(r => {
         r.data.data == "success" ? closeModal() : null
         $('#example').DataTable().ajax.reload();
     })
