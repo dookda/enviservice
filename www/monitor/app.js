@@ -71,18 +71,18 @@ series.data.processor = am5.DataProcessor.new(root, {
 });
 
 series.strokes.template.setAll({ strokeWidth: 2 });
-series.bullets.push(function () {
-    var graphics = am5.Circle.new(root, {
-        strokeWidth: 2,
-        radius: 5,
-        stroke: series.get("stroke"),
-        fill: root.interfaceColors.get("background"),
-    });
+// series.bullets.push(function () {
+//     var graphics = am5.Circle.new(root, {
+//         strokeWidth: 2,
+//         radius: 5,
+//         stroke: series.get("stroke"),
+//         fill: root.interfaceColors.get("background"),
+//     });
 
-    return am5.Bullet.new(root, {
-        sprite: graphics
-    });
-});
+//     return am5.Bullet.new(root, {
+//         sprite: graphics
+//     });
+// });
 
 let chart5 = (data) => {
     series.data.setAll(data);
