@@ -91,7 +91,7 @@ let chart5 = (data) => {
 let getData = (device, dstart, dend) => {
     // console.log(dstart, dend);
     axios.post(url + '/api/iotdata', { device, dstart, dend }).then(r => {
-        console.log(r.data);
+        // console.log(r.data);
         if (r.data.data !== "nodata") {
             let lmax = _.maxBy(r.data, 'lmax');
             // console.log(lmax);
@@ -138,7 +138,7 @@ const getInit = () => {
     document.getElementById('dstart').value = currentDate;
     document.getElementById('dend').value = currentDate;
     let device = document.getElementById("default_device").value
-    console.log(device);
+    // console.log(device);
     getData(device, `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}T00:00:00Z`, `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}T23:59:00Z`);
 }
 

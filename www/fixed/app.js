@@ -82,6 +82,7 @@ let saveData = () => {
         data: {
             usrid: document.getElementById('usrid').value,
             owner_name: document.getElementById('owner_name').value,
+            organize: document.getElementById('organize').value,
             product_type: document.getElementById('product_type').value,
             descr: document.getElementById('descr').value,
             img: dataurl ? dataurl : dataurl = ""
@@ -95,6 +96,7 @@ let saveData = () => {
             modal.hide();
             document.getElementById('usrid').value = "";
             document.getElementById('owner_name').value = "";
+            document.getElementById('organize').value = "";
             document.getElementById('product_type').value = "";
             document.getElementById('descr').value = ""
             document.getElementById('imgfile').value = "";

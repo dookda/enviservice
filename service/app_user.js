@@ -173,6 +173,27 @@ app.post("/api/deletedevice", (req, res) => {
     })
 });
 
+app.post("/api/getfixed", (req, res) => {
+    const { userid } = req.body;
+    const sql = `SELECT gid,owner_name,organize,product_type,descr,ts FROM fixed`;
+    db.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+});
+
+app.post("/api/getfixedone", (req, res) => {
+    const { gid } = req.body;
+    const sql = `SELECT * FROM fixed WHERE gid=${gid}`;
+    // console.log(sql);
+    db.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        })
+    })
+});
+
 app.post("/api/insertfixed", async (req, res) => {
     const { data } = req.body;
     let pid = Date.now()
@@ -188,6 +209,16 @@ app.post("/api/insertfixed", async (req, res) => {
 
     res.status(200).json({
         data: "success"
+    })
+});
+
+app.post("/api/deletefixed", (req, res) => {
+    const { gid } = req.body;
+    const sql = `DELETE FROM fixed WHERE gid=${gid}`;
+    db.query(sql).then(r => {
+        res.status(200).json({
+            data: "success"
+        })
     })
 });
 

@@ -1,0 +1,66 @@
+<?php
+
+mysqli_query($ConnectDB,"SET NAMES UTF8");
+if(isset($_GET['option'])){
+	switch($_GET['option']){
+		case'list':
+			include('list/index.php');	
+			break;	
+		case'add_list':
+			include('list/add_form.php');	
+			break;	
+		case'edit_list':
+			include('list/edit_form.php');	
+			break;	
+		case'list_detail':
+			include('list/detail.php');	
+			break;	
+		case'manage_status':
+			include('status/index.php');	
+			break;	
+		case'edit_status':
+			include('status/edit_form.php');	
+			break;	
+		case'add_status':
+			include('status/add_form.php');	
+			break;	
+		case'manage_category':
+			include('category/index.php');	
+			break;	
+		case'edit_category':
+			include('category/edit_form.php');	
+			break;	
+		case'add_category':
+			include('category/add_form.php');	
+			break;	
+		case'customer':
+			include('customer/index.php');	
+			break;	
+		case'edit_customer':
+			include('customer/edit_form.php');	
+			break;	
+		case'add_customer':
+			include('customer/add_form.php');	
+			break;
+		case'customer_detail':
+			include('customer/detail.php');	
+			break;		
+		case'setting':
+			include('setting/index.php');	
+			break;	
+		case'member':
+			include('member/index.php');	
+			break;	
+		default:
+			include('main.php');
+	}
+}else{
+	include('main.php');	
+}
+?>
+
+<script>
+jQuery(document).ready( function($) {
+
+});
+</script>
