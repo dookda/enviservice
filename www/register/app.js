@@ -16,7 +16,7 @@ var url = 'https://rti2dss.com/p3510';
 
 let getData = (usrid) => {
     axios.post(url + "/api/getuser", { usrid }).then((r) => {
-        console.log(r);
+        // console.log(r);
         if (r.data.data.length > 0) {
             document.getElementById("username").value = r.data.data[0].username;
             document.getElementById("agency").value = r.data.data[0].agency;

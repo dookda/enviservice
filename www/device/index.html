@@ -24,14 +24,38 @@
 
 <body>
   <!-- Navigation-->
-  <section>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container px-4 px-lg-5">
+      <a class="navbar-brand" href="#!"><img src="./../img/envir_logo.3af78a63.png" width="30px"
+          alt="">&nbsp;Envirservice</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+          class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+          <li class="nav-item"><a class="nav-link " aria-current="page" href="./../index.html">หน้าหลัก</a></li>
+          <li class="nav-item"><a class="nav-link" href="./../fixed/index.html">แจ้งซ่อม</a></li>
+          <li class="nav-item"><a class="nav-link" href="./../monitor/index.html">ติดตามข้อมูล</a></li>
+          <li class="nav-item"><a class="nav-link" href="#service">บริการ</a></li>
+          <li class="nav-item"><a class="nav-link" href="./../register/index.html">โปรไฟล์</a></li>
+
+        </ul>
+        <div class="float-right">
+          <img alt="" width="30px" class="rounded" id="profile">&nbsp;&nbsp;&nbsp;<span id="displayName"></span>
+          <input type="hidden" id="usrid">
+        </div>
+
+      </div>
+    </div>
+  </nav>
+  <section class="py-5" id="home">
     <div class="container px-4 px-lg-5 my-5">
 
-      <div class="float-right">
-        <img alt="" width="50px" class="rounded" id="profile">&nbsp;&nbsp;&nbsp;<span id="displayName"></span>
+      <!-- <div class="float-right">
+        <img alt="" width="30px" class="rounded" id="profile">&nbsp;&nbsp;&nbsp;<span id="displayName"></span>
         <input type="hidden" id="usrid">
       </div>
-      <hr>
+      <hr> -->
 
       <div class="mb-3">
         <label for="device" class="form-label">ระบุหมายเลขเครื่องให้ผู้ใช้ติดตามข้อมูล</label>
