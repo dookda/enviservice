@@ -55,7 +55,7 @@ let getDetail = (gid, email, dat) => {
     okButton.setAttribute("hidden", "hidden");
 }
 
-getFaq();
+// getFaq();
 getYear();
 
 

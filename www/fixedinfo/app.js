@@ -12,8 +12,8 @@ function initializeLiff() {
         console.log(err);
     });
 }
-// var url = 'https://rti2dss.com/p3510';
-var url = 'https://7188-202-28-250-109.ngrok.io';
+var url = 'https://rti2dss.com/p3510';
+// var url = 'https://7188-202-28-250-109.ngrok.io';
 
 async function getUserid() {
     const profile = await liff.getProfile();

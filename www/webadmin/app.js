@@ -1,6 +1,6 @@
 function initializeLiff() {
     liff.init({
-        liffId: "1656934660-r9AVYAx6"
+        liffId: "1656934660-9jAnvAGN"
     }).then((e) => {
         if (!liff.isLoggedIn()) {
             liff.login();
@@ -61,7 +61,7 @@ let loadData = async () => {
     });
     let table = $('#example').DataTable({
         ajax: {
-            url: url + '/api/getfixed',
+            url: url + '/api/getalluser/',
             dataSrc: 'data',
             cache: true,
             type: "POST",
@@ -71,16 +71,17 @@ let loadData = async () => {
             {
                 data: null,
                 render: function (data, type, row, meta) {
-                    return `<button onclick="gotoFixedinfo(${data.gid})" class="btn btn-margin btn-info" ><i class="bi bi-clipboard-x"></i> รายละเอียด</button>
-                    <button onclick="deleteData(${data.gid},'${data.owner_name}')" class="btn btn-margin btn-danger" ><i class="bi bi-clipboard-x"></i> ลบ</button>`
+                    return `
+                    <button onclick="gotoDevice('${data.usrid}')" class="btn btn-margin btn-warning" ><i class="bi bi-file-earmark-person"></i> จัดการอุปกรณ์</button>
+                    <button onclick="deleteData(${data.gid},'${data.username}')" class="btn btn-margin btn-danger" ><i class="bi bi-clipboard-x"></i> ลบ</button>`
                 },
             },
             { data: 'gid' },
-            { data: 'owner_name' },
-            { data: 'organize' },
-            { data: 'product_type' },
-            { data: 'descr' },
-            { data: 'ts' },
+            { data: 'username' },
+            { data: 'agency' },
+            { data: 'email' },
+            { data: 'tel' },
+            { data: 'usertype' },
         ],
         // dom: 'Bfrtip',
         // buttons: [
@@ -104,8 +105,8 @@ let loadData = async () => {
     }
 }
 
-let gotoFixedinfo = (gid) => {
-    location.href = "./../fixedinfo/index.html?gid=" + gid;
+let editData = (gid) => {
+    location.href = "./../edit/index.html?gid=" + gid;
 }
 
 let deleteData = (gid, username) => {
@@ -123,11 +124,10 @@ let deleteValue = () => {
     // console.log($("#projId").val());
     $("#deleteModal").modal("hide");
     let gid = $("#gid").val();
-    axios.post(url + "/api/deletefixed", { gid }).then(r => {
+    axios.post(url + "/api/delete", { gid }).then(r => {
         r.data.data == "success" ? closeModal() : null
         $('#example').DataTable().ajax.reload();
     })
 }
-
 
 initializeLiff()
