@@ -12,7 +12,7 @@ function initializeLiff() {
         console.log(err);
     });
 }
-// var url = 'https://rti2dss.com:3510';
+// var url = 'https://rti2dss.com/p3510';
 var url = 'https://7188-202-28-250-109.ngrok.io';
 
 async function getUserid() {

@@ -11,7 +11,7 @@ function initializeLiff() {
         console.log(err);
     });
 }
-var url = 'https://rti2dss.com:3510';
+var url = 'https://rti2dss.com/p3510';
 // var url = 'http://localhost:3000'
 
 let getData = (usrid) => {

@@ -21,7 +21,7 @@ async function getUserid() {
     chkAdmin(profile.userId)
 }
 
-var url = 'https://rti2dss.com:3510';
+var url = 'https://rti2dss.com/p3510';
 // var url = 'https://5639-2001-44c8-45c0-1dbf-c837-b0b-3c03-df5d.ngrok.io';
 
 let chkAdmin = (usrid) => {
