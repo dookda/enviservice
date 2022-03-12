@@ -55,6 +55,45 @@ let getDetail = (gid, email, dat) => {
     okButton.setAttribute("hidden", "hidden");
 }
 
+let handleFiles = (id) => {
+    console.log(id);
+    var filesToUploads = document.getElementById('imgfile' + id).files;
+    var file = filesToUploads[0];
+    var reader = new FileReader();
+
+    reader.onloadend = (e) => {
+        let imageOriginal = reader.result;
+        resizeImage(file);
+        document.getElementById('preview' + id).src = imageOriginal;
+    }
+    reader.readAsDataURL(file);
+};
+
+let dataurl = "";
+
+let resizeImage = (file) => {
+    var maxW = 600;
+    var maxH = 600;
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    var img = document.createElement('img');
+    var result = '';
+    img.onload = function () {
+        var iw = img.width;
+        var ih = img.height;
+        var scale = Math.min((maxW / iw), (maxH / ih));
+        var iwScaled = iw * scale;
+        var ihScaled = ih * scale;
+        canvas.width = iwScaled;
+        canvas.height = ihScaled;
+        context.drawImage(img, 0, 0, iwScaled, ihScaled);
+        result += canvas.toDataURL('image/jpeg', 0.5);
+        dataurl = result;
+        // document.getElementById('rez').src = that.imageResize;
+    }
+    img.src = URL.createObjectURL(file);
+}
+
 // getFaq();
 getYear();
 
