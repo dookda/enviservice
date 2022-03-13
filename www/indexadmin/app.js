@@ -34,8 +34,6 @@ let gotoHome = () => {
     location.href = "./../index.html"
 }
 
-
-var url = 'http://localhost:3510';
 var modal = new bootstrap.Modal(document.getElementById('modal'), {
     keyboard: false
 });
