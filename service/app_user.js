@@ -244,6 +244,27 @@ app.post("/api/iotdata", async (req, res) => {
         }
     });
 });
-console.log(new Date().toUTCString());
+
+app.get('/api/selectpic', (req, res) => {
+    let sql = "SELECT * FROM img";
+    db.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+});
+
+app.post("/api/updatepic", async (req, res) => {
+    const { gid, img } = req.body;
+
+    let sql = `UPDATE img SET img='${img}' WHERE gid='${gid}'`;
+    // console.log(sql);
+    await db.query(sql).then(
+        res.status(200).json({
+            data: "success"
+        })
+    )
+});
+// console.log(new Date().toUTCString());
 
 module.exports = app;

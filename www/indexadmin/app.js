@@ -60,11 +60,63 @@ let getDetail = (gid, email, dat) => {
 let getImg = () => {
     axios.get('/api/selectpic').then(r => {
         r.data.data.map(i => {
-            // console.log(i);
+            console.log(i);
             document.getElementById('preview' + i.gid).src = i.img;
         })
     })
 }
+
+let handleFiles = (id) => {
+    console.log(id);
+    var filesToUploads = document.getElementById('imgfile' + id).files;
+    var file = filesToUploads[0];
+    var reader = new FileReader();
+
+    reader.onloadend = (e) => {
+        let imageOriginal = reader.result;
+        resizeImage(id, file);
+        document.getElementById('preview' + id).src = imageOriginal;
+    }
+    reader.readAsDataURL(file);
+};
+
+let dataurl = "";
+let resizeImage = async (id, file) => {
+    var maxW = 600;
+    var maxH = 600;
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    var img = document.createElement('img');
+    var result = '';
+    img.onload = async () => {
+        var iw = img.width;
+        var ih = img.height;
+        var scale = Math.min((maxW / iw), (maxH / ih));
+        var iwScaled = iw * scale;
+        var ihScaled = ih * scale;
+        canvas.width = iwScaled;
+        canvas.height = ihScaled;
+        context.drawImage(img, 0, 0, iwScaled, ihScaled);
+        result += canvas.toDataURL('image/jpeg', 0.5);
+        dataurl = result;
+        // document.getElementById('rez').src = that.imageResize;
+        await saveData(id, dataurl)
+    }
+    img.src = URL.createObjectURL(file);
+}
+
+let saveData = (gid, img) => {
+    const obj = {
+        gid: gid,
+        img: img ? img : img = ""
+    }
+
+    axios.post(url + '/api/updatepic', obj).then((r) => {
+        console.log(r.data);
+        // sentMulticast(obj.data.owner_name);
+        // modal.show();
+    })
+};
 
 // getFaq();
 getYear();
