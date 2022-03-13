@@ -1,3 +1,39 @@
+function initializeLiff() {
+    liff.init({
+        liffId: "1656934660-zLQobQ78"
+    }).then((e) => {
+        if (!liff.isLoggedIn()) {
+            liff.login();
+        } else {
+            getUserid();
+        }
+    }).catch((err) => {
+        console.log(err);
+    });
+}
+
+async function getUserid() {
+    const profile = await liff.getProfile();
+    // console.log(profile);
+    document.getElementById("usrid").value = await profile.userId;
+    document.getElementById("profile").src = await profile.pictureUrl;
+    document.getElementById("displayName").innerHTML = await profile.displayName;
+    chkAdmin(profile.userId)
+}
+
+var url = 'https://rti2dss.com/p3510';
+// var url = 'https://5639-2001-44c8-45c0-1dbf-c837-b0b-3c03-df5d.ngrok.io';
+
+let chkAdmin = (usrid) => {
+    axios.post(url + '/api/getuser', { usrid }).then((r) => {
+        r.data.data[0].usertype == 'admin' ? loadData() : $("#modal").modal("show");
+    })
+}
+
+let gotoHome = () => {
+    location.href = "./../index.html"
+}
+
 
 var url = 'http://localhost:3510';
 var modal = new bootstrap.Modal(document.getElementById('modal'), {
@@ -121,5 +157,5 @@ let saveData = (gid, img) => {
 // getFaq();
 getYear();
 getImg();
-
+initializeLiff()
 
