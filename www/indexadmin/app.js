@@ -26,7 +26,7 @@ var url = 'https://rti2dss.com/p3510';
 
 let chkAdmin = (usrid) => {
     axios.post(url + '/api/getuser', { usrid }).then((r) => {
-        r.data.data[0].usertype == 'admin' ? loadData() : $("#modal").modal("show");
+        r.data.data[0].usertype == 'admin' ? getImg() : $("#modal").modal("show");
     })
 }
 
@@ -41,7 +41,7 @@ let okButton = document.getElementById("ok");
 let sendFaq = () => {
     var email = document.getElementById('email').value;
     var dat = document.getElementById('dat').value;
-    axios.post('/api/insert', { data: { dat, email } }).then(r => {
+    axios.post(url + '/api/insert', { data: { dat, email } }).then(r => {
         if (r.data.data == "success") {
             modal.hide()
             getFaq();
@@ -61,7 +61,7 @@ let showModal = () => {
 let tagetDiv = document.getElementById("quest");
 let getFaq = () => {
     tagetDiv.innerHTML = "";
-    axios.get('/api/getlast5').then(r => {
+    axios.get(url + '/api/getlast5').then(r => {
         r.data.data.map(i => {
             // console.log(i);
             let lstQuest = `<div class="shadow-none p-3 mb-1 bg-light rounded flex" role="alert">
@@ -92,8 +92,9 @@ let getDetail = (gid, email, dat) => {
 }
 
 let getImg = () => {
-    axios.get('/api/selectpic').then(r => {
-        r.data.data.map(i => {
+    axios.get(url + '/api/selectpic').then(async r => {
+        // console.log(r);
+        await r.data.data.map(i => {
             console.log(i);
             document.getElementById('preview' + i.gid).src = i.img;
         })
@@ -154,6 +155,5 @@ let saveData = (gid, img) => {
 
 // getFaq();
 getYear();
-getImg();
 initializeLiff()
 
