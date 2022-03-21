@@ -1,5 +1,6 @@
 
-var url = 'http://localhost:3510';
+// var url = 'http://localhost:3510';
+var url = 'https://rti2dss.com/p3510';
 var modal = new bootstrap.Modal(document.getElementById('modal'), {
     keyboard: false
 });
@@ -58,7 +59,7 @@ let getDetail = (gid, email, dat) => {
 }
 
 let getImg = () => {
-    axios.get('/api/selectpic').then(r => {
+    axios.get(url + '/api/selectpic').then(r => {
         r.data.data.map(i => {
             // console.log(i);
             document.getElementById('preview' + i.gid).src = i.img;
