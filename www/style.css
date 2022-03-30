@@ -32,3 +32,10 @@ py-5 {
     padding-top: 3rem!important;
     padding-bottom: 5rem!important;
 }
+
+.ct {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
