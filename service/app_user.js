@@ -224,15 +224,16 @@ app.post("/api/deletefixed", (req, res) => {
 
 app.post("/api/iotdata", async (req, res) => {
     let { device, dstart, dend } = req.body;
-    // console.log(`http://envirservice.net/api/v1/reports/logs?device_id=${device}&begin_date=${dstart}&end_date=${dend}`);
-    axios.get(`http://envirservice.net/api/v1/reports/logs?device_id=${device}&begin_date=${dstart}&end_date=${dend}`).then(async (r) => {
-        // console.log(r);
+    const url = `http://envirservice.net/api/v1/reports/logs?device_id=${device}&begin_date=${dstart}&end_date=${dend}`;
+    axios.get(url).then(async (r) => {
         if (r.data.data.length > 0) {
             let dat = [];
             r.data.data.map(i => {
-                let d = new Date(i.event);
+                // let d = new Date(i.event);
+                // console.log(i.event);
                 dat.push({
-                    dt: `${d.getFullYear()}-${d.getMonth()}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+                    // dt: `${d.getFullYear()}-${d.getMonth()}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+                    dt: i.event,
                     lmax: Number(i.data.split(",")[10])
                 })
             });
@@ -265,6 +266,30 @@ app.post("/api/updatepic", async (req, res) => {
         })
     )
 });
-// console.log(new Date().toUTCString());
+
+const d = new Date();
+let currentDate = d.toISOString().substring(0, 10);
+console.log(d.getHours());
+let notify = () => {
+    let { device, dstart, dend } = req.body;
+    axios.get(`http://envirservice.net/api/v1/reports/logs?device_id=${device}&begin_date=${dstart}&end_date=${dend}`).then(async (r) => {
+        // console.log(r);
+        if (r.data.data.length > 0) {
+            let dat = [];
+            r.data.data.map(i => {
+                let d = new Date(i.event);
+                dat.push({
+                    dt: `${d.getFullYear()}-${d.getMonth()}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+                    lmax: Number(i.data.split(",")[10])
+                })
+            });
+            await res.status(200).json(dat);
+        } else {
+            res.status(200).json({
+                data: "nodata"
+            });
+        }
+    });
+};
 
 module.exports = app;

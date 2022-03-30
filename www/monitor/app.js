@@ -11,8 +11,8 @@ function initializeLiff() {
         console.log(err);
     });
 }
-var url = 'https://rti2dss.com/p3510';
-// var url = 'https://5639-2001-44c8-45c0-1dbf-c837-b0b-3c03-df5d.ngrok.io';
+// var url = 'https://rti2dss.com/p3510';
+var url = 'https://b188-202-28-250-94.ngrok.io';
 
 
 let gotoOwnerPost = () => {
@@ -94,7 +94,8 @@ let getData = (device, dstart, dend) => {
         // console.log(r.data);
         if (r.data.data !== "nodata") {
             let lmax = _.maxBy(r.data, 'lmax');
-            // console.log(lmax);
+            console.log(lmax);
+            console.log(r.data);
             document.getElementById("lmax").innerHTML = lmax.lmax;
             document.getElementById("ldate").innerHTML = lmax.dt;
             chart5(r.data)
@@ -138,8 +139,10 @@ const getInit = () => {
     document.getElementById('dstart').value = currentDate;
     document.getElementById('dend').value = currentDate;
     let device = document.getElementById("default_device").value
-    // console.log(device);
-    getData(device, `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}T00:00:00Z`, `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}T23:59:00Z`);
+    let dstart = `${currentDate}T00:00:00Z`;
+    let dend = `${currentDate}T23:59:00Z`;
+    console.log(dstart, dend);
+    getData(device, dstart, dend);
 }
 
 initializeLiff();
