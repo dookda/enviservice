@@ -92,10 +92,9 @@ let getDetail = (gid, email, dat) => {
 }
 
 let getImg = () => {
-    axios.get(url + '/api/selectpic').then(async r => {
-        // console.log(r);
-        await r.data.data.map(i => {
-            console.log(i);
+    axios.get(url + '/api/selectpic').then(r => {
+        r.data.data.map(i => {
+            // console.log(i);
             document.getElementById('preview' + i.gid).src = i.img;
         })
     })

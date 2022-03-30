@@ -5,6 +5,9 @@ const app = express.Router();
 const con = require("./db");
 const db = con.db;
 
+const line = require("@line/bot-sdk");
+const config = require("./config.json")
+const client = new line.Client(config)
 
 app.post("/api/insert", async (req, res) => {
     const { data } = req.body;
@@ -269,27 +272,75 @@ app.post("/api/updatepic", async (req, res) => {
 
 const d = new Date();
 let currentDate = d.toISOString().substring(0, 10);
-console.log(d.getHours());
-let notify = () => {
-    let { device, dstart, dend } = req.body;
+
+
+
+var moment = require('moment');
+
+
+// process.env.TZ = 'Asia/Bangkok';
+let notify = (device, userid) => {
+    var currentDateObj = new Date();
+    var numberOfMlSeconds = currentDateObj.getTime();
+    var addMlSeconds = 30 * 60 * 1000;
+    var newDateObj = new Date(numberOfMlSeconds - addMlSeconds);
+
+    // let device = 2;
+    // let dstart = newDateObj.toISOString();
+    // let dend = currentDateObj.toISOString();
+    let dend = moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
+    let dstart = moment().subtract(600, 'minute').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
+    // console.log(dstart, dend);
+    // console.log(a, b);
+    // console.log(dstart, dend.toISOString());
     axios.get(`http://envirservice.net/api/v1/reports/logs?device_id=${device}&begin_date=${dstart}&end_date=${dend}`).then(async (r) => {
-        // console.log(r);
+        // console.log(r.data);
         if (r.data.data.length > 0) {
             let dat = [];
             r.data.data.map(i => {
-                let d = new Date(i.event);
-                dat.push({
-                    dt: `${d.getFullYear()}-${d.getMonth()}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
-                    lmax: Number(i.data.split(",")[10])
-                })
+                if (Number(i.data.split(",")[10]) >= 90) {
+                    dat.push({
+                        // dt: `${d.getFullYear()}-${d.getMonth()}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+                        dt: i.event,
+                        lmax: Number(i.data.split(",")[10])
+                    });
+                    const msg = {
+                        type: 'text',
+                        text: `อุปกรณ์ตัวที่ ${device} วัดความดังของเสียง ${Number(i.data.split(",")[10])} dฺB เวลา ${i.event}`
+                    };
+                    // const userId = userid
+                    client.pushMessage(userid, msg)
+                }
             });
-            await res.status(200).json(dat);
+
         } else {
-            res.status(200).json({
-                data: "nodata"
-            });
+            console.log(r.data.data);
         }
     });
 };
+
+const getDevice = async () => {
+    const sql = "SELECT * FROM device";
+    await db.query(sql).then(r => {
+        console.log(r.rows);
+        r.rows.map(async (i) => {
+            console.log(i.device, i.userid);
+            await notify(i.device, i.userid);
+        });
+    });
+}
+
+setInterval(i => {
+    getDevice();
+}, 10000)
+
+app.get("/api/pushmsg", (req, res) => {
+    const msg = {
+        type: 'text',
+        text: 'Hello World! from push message'
+    };
+    const userId = 'U9637af256066b9514cc93bf7cbe8c643'
+    client.pushMessage(userId, msg)
+});
 
 module.exports = app;

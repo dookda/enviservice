@@ -11,8 +11,8 @@ function initializeLiff() {
         console.log(err);
     });
 }
-// var url = 'https://rti2dss.com/p3510';
-var url = 'https://b188-202-28-250-94.ngrok.io';
+var url = 'https://rti2dss.com/p3510';
+// var url = 'https://b188-202-28-250-94.ngrok.io';
 
 
 let gotoOwnerPost = () => {
@@ -136,12 +136,13 @@ let deviceList = () => {
 const d = new Date();
 const getInit = () => {
     let currentDate = d.toISOString().substring(0, 10);
+    console.log(d);
     document.getElementById('dstart').value = currentDate;
     document.getElementById('dend').value = currentDate;
     let device = document.getElementById("default_device").value
     let dstart = `${currentDate}T00:00:00Z`;
     let dend = `${currentDate}T23:59:00Z`;
-    console.log(dstart, dend);
+    // console.log(dstart, dend);
     getData(device, dstart, dend);
 }
 
