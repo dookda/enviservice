@@ -1,5 +1,6 @@
 const { default: axios } = require('axios');
 const express = require('express');
+const moment = require('moment');
 const app = express.Router();
 
 const con = require("./db");
@@ -273,26 +274,11 @@ app.post("/api/updatepic", async (req, res) => {
 const d = new Date();
 let currentDate = d.toISOString().substring(0, 10);
 
-
-
-var moment = require('moment');
-
-
 // process.env.TZ = 'Asia/Bangkok';
 let notify = (device, userid) => {
-    var currentDateObj = new Date();
-    var numberOfMlSeconds = currentDateObj.getTime();
-    var addMlSeconds = 30 * 60 * 1000;
-    var newDateObj = new Date(numberOfMlSeconds - addMlSeconds);
-
-    // let device = 2;
-    // let dstart = newDateObj.toISOString();
-    // let dend = currentDateObj.toISOString();
     let dend = moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
-    let dstart = moment().subtract(600, 'minute').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
-    // console.log(dstart, dend);
-    // console.log(a, b);
-    // console.log(dstart, dend.toISOString());
+    let dstart = moment().subtract(15, 'minute').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
+
     axios.get(`http://envirservice.net/api/v1/reports/logs?device_id=${device}&begin_date=${dstart}&end_date=${dend}`).then(async (r) => {
         // console.log(r.data);
         if (r.data.data.length > 0) {
@@ -304,15 +290,33 @@ let notify = (device, userid) => {
                         dt: i.event,
                         lmax: Number(i.data.split(",")[10])
                     });
+                    // const msg = {
+                    //     type: 'text',
+                    //     text: `อุปกรณ์ตัวที่ ${device} ความดังของเสียงวัดได้ ${Number(i.data.split(",")[10])} dB เวลา ${i.event} $ เข้าดูรายละเอียดข้อมูลที่ https://liff.line.me/1656934660-QndaYdr0`,
+                    //     emojis: [
+                    //         {
+                    //             index: 0,
+                    //             productId: "5ac1bfd5040ab15980c9b435",
+                    //             emojiId: "174"
+                    //         }
+                    //     ]
+                    // };
+
                     const msg = {
-                        type: 'text',
-                        text: `อุปกรณ์ตัวที่ ${device} วัดความดังของเสียง ${Number(i.data.split(",")[10])} dฺB เวลา ${i.event}`
-                    };
+                        "type": "text",
+                        "text": `$ อุปกรณ์ตัวที่ ${device} ความดังของเสียงวัดได้ ${Number(i.data.split(",")[10])} dB เวลา ${i.event} เข้าดูรายละเอียดข้อมูลที่ https://liff.line.me/1656934660-QndaYdr0`,
+                        "emojis": [
+                            {
+                                "index": 0,
+                                "productId": "5ac1bfd5040ab15980c9b435",
+                                "emojiId": "174"
+                            }
+                        ]
+                    }
                     // const userId = userid
                     client.pushMessage(userid, msg)
                 }
             });
-
         } else {
             console.log(r.data.data);
         }
@@ -332,7 +336,7 @@ const getDevice = async () => {
 
 setInterval(i => {
     getDevice();
-}, 10000)
+}, 90000)
 
 app.get("/api/pushmsg", (req, res) => {
     const msg = {
