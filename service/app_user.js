@@ -278,7 +278,7 @@ let currentDate = d.toISOString().substring(0, 10);
 let notify = (device, userid) => {
     let dend = moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
     let dstart = moment().subtract(15, 'minute').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
-
+    console.log(dend, dstart);
     axios.get(`http://envirservice.net/api/v1/reports/logs?device_id=${device}&begin_date=${dstart}&end_date=${dend}`).then(async (r) => {
         // console.log(r.data);
         if (r.data.data.length > 0) {
@@ -290,17 +290,6 @@ let notify = (device, userid) => {
                         dt: i.event,
                         lmax: Number(i.data.split(",")[10])
                     });
-                    // const msg = {
-                    //     type: 'text',
-                    //     text: `อุปกรณ์ตัวที่ ${device} ความดังของเสียงวัดได้ ${Number(i.data.split(",")[10])} dB เวลา ${i.event} $ เข้าดูรายละเอียดข้อมูลที่ https://liff.line.me/1656934660-QndaYdr0`,
-                    //     emojis: [
-                    //         {
-                    //             index: 0,
-                    //             productId: "5ac1bfd5040ab15980c9b435",
-                    //             emojiId: "174"
-                    //         }
-                    //     ]
-                    // };
 
                     const msg = {
                         "type": "text",
@@ -326,9 +315,7 @@ let notify = (device, userid) => {
 const getDevice = async () => {
     const sql = "SELECT * FROM device";
     await db.query(sql).then(r => {
-        console.log(r.rows);
         r.rows.map(async (i) => {
-            console.log(i.device, i.userid);
             await notify(i.device, i.userid);
         });
     });
@@ -336,7 +323,7 @@ const getDevice = async () => {
 
 setInterval(i => {
     getDevice();
-}, 90000)
+}, 10000)
 
 app.get("/api/pushmsg", (req, res) => {
     const msg = {
