@@ -271,10 +271,6 @@ app.post("/api/updatepic", async (req, res) => {
     )
 });
 
-const d = new Date();
-let currentDate = d.toISOString().substring(0, 10);
-
-// process.env.TZ = 'Asia/Bangkok';
 let notify = (device, userid) => {
     let dend = moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
     let dstart = moment().subtract(15, 'minute').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
@@ -286,7 +282,6 @@ let notify = (device, userid) => {
             r.data.data.map(i => {
                 if (Number(i.data.split(",")[10]) >= 90) {
                     dat.push({
-                        // dt: `${d.getFullYear()}-${d.getMonth()}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
                         dt: i.event,
                         lmax: Number(i.data.split(",")[10])
                     });
@@ -302,7 +297,6 @@ let notify = (device, userid) => {
                             }
                         ]
                     }
-                    // const userId = userid
                     client.pushMessage(userid, msg)
                 }
             });
