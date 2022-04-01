@@ -271,6 +271,28 @@ app.post("/api/updatepic", async (req, res) => {
     )
 });
 
+app.get('/api/selectvdo', (req, res) => {
+    let sql = "SELECT * FROM vdo";
+    db.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+});
+
+
+app.post("/api/updatevdo", async (req, res) => {
+    const { gid, vdo } = req.body;
+    console.log(gid, vdo);
+    let sql = `UPDATE vdo SET vdo='${vdo}' WHERE gid='${gid}'`;
+    // console.log(sql);
+    await db.query(sql).then(
+        res.status(200).json({
+            data: "success"
+        })
+    )
+});
+
 let notify = (device, userid) => {
     let dend = moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
     let dstart = moment().subtract(15, 'minute').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
@@ -317,7 +339,7 @@ const getDevice = async () => {
 
 setInterval(i => {
     getDevice();
-}, 10000)
+}, 90000)
 
 app.get("/api/pushmsg", (req, res) => {
     const msg = {

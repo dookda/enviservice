@@ -57,7 +57,8 @@
 
           <p></p>
           <div id="video-container" style="z-index: -1;">
-            <video autoplay loop muted src="./../img/DiscoverInstantel.mp4" style="width: 100%; height: 100%;">
+            <video playsinline autoplay loop muted src="./../img/DiscoverInstantel.mp4"
+              style="width: 100%; height: 100%;">
             </video>
           </div>
 
@@ -106,68 +107,6 @@
       </div>
     </div>
   </section>
-
-  <!-- Related items section-->
-  <!-- <section class="py-5 bg-light" id="band">
-    <div class="container px-4 px-lg-5 mt-5">
-      <h2 class="fw-bolder mb-4">นำเข้าและจำหน่าย</h2>
-      นำเข้าและจำหน่ายเครื่องมือทางด้านสิ่งแวดล้อมหลากหลายประเภท
-      <p></p>
-      <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-        <div class="col mb-5">
-          <div class="shadow-sm p-4 mb-1 bg-body rounded h-100">
-            ACO Sound Level Meter type
-            6226/6236
-            <p></p>
-            <img class="card-img-top" src="./band/ACO.jpeg" alt="..." />
-            <div class="card-footer p-4 pt-3 border-top-0 bg-transparent">
-              <div class="text-center"><a class="btn btn-outline-success mt-auto" href="#">เว็บไซต์</a></div>
-            </div>
-          </div>
-        </div>
-        <div class="col mb-5">
-          <div class="shadow-sm p-4 mb-1 bg-body rounded h-100">
-            IMR 7500
-            <p></p>
-            <img class="card-img-top" src="./band/IMR.jpeg" alt="..." />
-
-            <div class="card-footer p-4 pt-3 border-top-0 bg-transparent">
-              <div class="text-center"><a class="btn btn-outline-success mt-auto" href="#">เว็บไซต์</a></div>
-            </div>
-          </div>
-        </div>
-        <div class="col mb-5">
-          <div class="shadow-sm p-4 mb-1 bg-body rounded h-100">
-            <p></p>
-            <img class="card-img-top" src="./band/instantel.jpeg" alt="..." />
-
-            <div class="card-footer p-4 pt-3 border-top-0 bg-transparent">
-              <div class="text-center"><a class="btn btn-outline-success mt-auto" href="#">เว็บไซต์</a></div>
-            </div>
-          </div>
-        </div>
-        <div class="col mb-5">
-          <div class="shadow-sm p-4 mb-1 bg-body rounded h-100">
-            NRG ANEMOMETER
-            <p></p>
-            <img class="card-img-top text-center" src="./band/nrg.jpeg" alt="..." />
-
-            <div class="card-footer p-4 pt-3 border-top-0 bg-transparent">
-              <div class="text-center"><a class="btn btn-outline-success mt-auto"
-                  href="https://www.nrgsystems.com/products/categories">เว็บไซต์</a></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="py-5">
-    <div class="container px-4 px-lg-5 mt-5">
-      <h2 class="fw-bolder mb-4">บริการเช่าและซ่อมบำรุง</h2>
-      
-    </div>
-  </section> -->
 
   <section class="py-5 " id="expertis">
     <div class="container px-4 px-lg-5 mt-5">
@@ -269,23 +208,31 @@
             </div>
           </div>
         </div>
+
       </div>
+
+      <hr>
+      <div class="col mb-5">
+        <div class="card ">
+          <div class="videoWrapper">
+            <iframe width="100%" height="340" id="vdo">
+            </iframe>
+          </div>
+          <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+            <div class="text-center">
+              <!-- <input class="form-control" type="text" id="vdo"> -->
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" id="embedtxt" aria-label="Recipient's username"
+                  aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="button" onclick="saveVdo()">บันทึก</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
-
-  <!-- Related items section-->
-  <!-- <section class="py-5" id="faq">
-    <div class="container px-4 px-lg-5 mt-5">
-      <h2 class="fw-bolder mb-4">กระดานถาม-ตอบ</h2>
-      <button type="button" class="btn btn-success" onclick="showModal()">
-        สอบถาม
-      </button>
-      <p></p>
-      <div class="row gx-12 gx-lg-12 row-cols-1 row-cols-md-12 row-cols-xl-12 justify-content-center" id="quest">
-
-      </div>
-    </div>
-  </section> -->
 
   <!-- Related items section-->
   <section class="py-5 bg-light" id="aboutus">

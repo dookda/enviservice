@@ -22,11 +22,16 @@ async function getUserid() {
 }
 
 var url = 'https://rti2dss.com/p3510';
-// var url = 'https://5639-2001-44c8-45c0-1dbf-c837-b0b-3c03-df5d.ngrok.io';
+// var url = 'https://b188-202-28-250-94.ngrok.io';
 
 let chkAdmin = (usrid) => {
     axios.post(url + '/api/getuser', { usrid }).then((r) => {
-        r.data.data[0].usertype == 'admin' ? getImg() : $("#modal").modal("show");
+        if (r.data.data[0].usertype == 'admin') {
+            getImg();
+            getVdo();
+        } else {
+            $("#modal").modal("show");
+        }
     })
 }
 
@@ -145,12 +150,28 @@ let saveData = (gid, img) => {
         img: img ? img : img = ""
     }
 
-    axios.post(url + '/api/updatepic', obj).then((r) => {
-        console.log(r.data);
-        // sentMulticast(obj.data.owner_name);
-        // modal.show();
-    })
+    axios.post(url + '/api/updatepic', obj).then(r => console.log(r))
 };
+
+const saveVdo = () => {
+    const obj = {
+        gid: 1,
+        vdo: document.getElementById("embedtxt").value
+    }
+    // console.log(obj);
+    axios.post(url + '/api/updatevdo', obj).then(r => {
+        getVdo();
+        document.getElementById("embedtxt").value = ""
+    })
+}
+
+let getVdo = () => {
+    axios.get(url + '/api/selectvdo').then(r => {
+        r.data.data.map(i => {
+            document.getElementById('vdo').src = "https://www.youtube.com/embed/" + i.vdo;
+        })
+    })
+}
 
 // getFaq();
 getYear();

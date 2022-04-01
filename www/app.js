@@ -61,8 +61,15 @@ let getDetail = (gid, email, dat) => {
 let getImg = () => {
     axios.get(url + '/api/selectpic').then(r => {
         r.data.data.map(i => {
-            // console.log(i);
             document.getElementById('preview' + i.gid).src = i.img;
+        })
+    })
+}
+
+let getVdo = () => {
+    axios.get(url + '/api/selectvdo').then(r => {
+        r.data.data.map(i => {
+            document.getElementById('vdo').src = i.vdo;
         })
     })
 }
@@ -70,5 +77,6 @@ let getImg = () => {
 // getFaq();
 getYear();
 getImg();
+getVdo();
 
 
