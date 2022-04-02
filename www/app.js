@@ -69,7 +69,7 @@ let getImg = () => {
 let getVdo = () => {
     axios.get(url + '/api/selectvdo').then(r => {
         r.data.data.map(i => {
-            document.getElementById('vdo').src = "https://www.youtube.com/embed/" + i.vdo;
+            document.getElementById('vdo').src = i.vdo;
         })
     })
 }

@@ -22,7 +22,7 @@ async function getUserid() {
 }
 
 var url = 'https://rti2dss.com/p3510';
-// var url = 'https://b188-202-28-250-94.ngrok.io';
+// var url = 'https://18ff-2001-44c8-45ca-f571-656d-47ff-74df-fc0e.ngrok.io';
 
 let chkAdmin = (usrid) => {
     axios.post(url + '/api/getuser', { usrid }).then((r) => {
@@ -154,11 +154,14 @@ let saveData = (gid, img) => {
 };
 
 const saveVdo = () => {
+    let vdo = document.getElementById("embedtxt").value
+    // vdo.replace('watch?v=', 'embed/')
+    console.log(vdo);
     const obj = {
         gid: 1,
-        vdo: document.getElementById("embedtxt").value
+        vdo: vdo
     }
-    // console.log(obj);
+    console.log(obj);
     axios.post(url + '/api/updatevdo', obj).then(r => {
         getVdo();
         document.getElementById("embedtxt").value = ""
@@ -168,7 +171,8 @@ const saveVdo = () => {
 let getVdo = () => {
     axios.get(url + '/api/selectvdo').then(r => {
         r.data.data.map(i => {
-            document.getElementById('vdo').src = "https://www.youtube.com/embed/" + i.vdo;
+            // console.log(i);
+            document.getElementById('vdo').src = i.vdo;
         })
     })
 }
