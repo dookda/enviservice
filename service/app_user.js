@@ -295,19 +295,13 @@ app.post("/api/updatevdo", async (req, res) => {
 
 let notify = (device, userid) => {
     let dend = moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
-    let dstart = moment().subtract(15, 'minute').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
-    console.log(dend, dstart);
+    let dstart = moment().subtract(450, 'minute').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
+    // console.log(dend, dstart);
     axios.get(`http://envirservice.net/api/v1/reports/logs?device_id=${device}&begin_date=${dstart}&end_date=${dend}`).then(async (r) => {
         // console.log(r.data);
         if (r.data.data.length > 0) {
-            let dat = [];
             r.data.data.map(i => {
-                if (Number(i.data.split(",")[10]) >= 90) {
-                    dat.push({
-                        dt: i.event,
-                        lmax: Number(i.data.split(",")[10])
-                    });
-
+                if (Number(i.data.split(",")[10]) >= 80) {
                     const msg = {
                         "type": "text",
                         "text": `$ อุปกรณ์ตัวที่ ${device} ความดังของเสียงวัดได้ ${Number(i.data.split(",")[10])} dB เวลา ${i.event} เข้าดูรายละเอียดข้อมูลที่ https://liff.line.me/1656934660-QndaYdr0`,
@@ -339,7 +333,7 @@ const getDevice = async () => {
 
 setInterval(i => {
     getDevice();
-}, 90000)
+}, 10000)
 
 app.get("/api/pushmsg", (req, res) => {
     const msg = {
