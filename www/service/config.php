@@ -1,9 +1,9 @@
 <?php
-$mydatabase="envirservi_web";
+$mydatabase="cp897163_envirservi_web";
 date_default_timezone_set('Asia/Bangkok');
-$ConnectDB = mysqli_connect("localhost","envirservi_web","3wV08KgHc",$mydatabase) ;
+$ConnectDB = mysqli_connect("localhost","cp897163_mysql","z@Envirservice",$mydatabase) ;
 function quote($post){
-return mysqli_real_escape_string($GLOBALS['ConnectDB'],$post);
+	return mysqli_real_escape_string($GLOBALS['ConnectDB'],$post);
 }
 mysqli_query($ConnectDB,"SET NAMES UTF8");
 
@@ -11,6 +11,7 @@ function GetConfig(){
 	global $ConnectDB;
 $sql='SELECT * FROM `env_data` WHERE `id`="1" LIMIT 0 , 1';
 $result=mysqli_query($ConnectDB,$sql);
+
 $nums = mysqli_num_rows($result);
 	if($nums!=0){
 			while($data=mysqli_fetch_array($result, MYSQLI_ASSOC))	{
