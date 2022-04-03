@@ -301,7 +301,7 @@ let notify = (device, userid) => {
         // console.log(r.data);
         if (r.data.data.length > 0) {
             r.data.data.map(i => {
-                if (Number(i.data.split(",")[10]) >= 80) {
+                if (Number(i.data.split(",")[10]) >= 90) {
                     const msg = {
                         "type": "text",
                         "text": `$ อุปกรณ์ตัวที่ ${device} ความดังของเสียงวัดได้ ${Number(i.data.split(",")[10])} dB เวลา ${i.event} เข้าดูรายละเอียดข้อมูลที่ https://liff.line.me/1656934660-QndaYdr0`,
