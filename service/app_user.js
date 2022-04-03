@@ -295,7 +295,7 @@ app.post("/api/updatevdo", async (req, res) => {
 
 let notify = (device, userid) => {
     let dend = moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
-    let dstart = moment().subtract(450, 'minute').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
+    let dstart = moment().subtract(15, 'minute').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
     // console.log(dend, dstart);
     axios.get(`http://envirservice.net/api/v1/reports/logs?device_id=${device}&begin_date=${dstart}&end_date=${dend}`).then(async (r) => {
         // console.log(r.data);
@@ -333,7 +333,7 @@ const getDevice = async () => {
 
 setInterval(i => {
     getDevice();
-}, 10000)
+}, 90000)
 
 app.get("/api/pushmsg", (req, res) => {
     const msg = {
