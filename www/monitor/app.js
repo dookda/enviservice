@@ -12,7 +12,7 @@ function initializeLiff() {
     });
 }
 var url = 'https://rti2dss.com/p3510';
-// var url = 'https://b188-202-28-250-94.ngrok.io';
+// var url = 'https://1b02-49-230-241-158.ngrok.io';
 
 
 let gotoOwnerPost = () => {
@@ -46,7 +46,7 @@ var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
 }));
 cursor.lineY.set("visible", true);
 var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
-    baseInterval: { timeUnit: "second", count: 1 },
+    baseInterval: { timeUnit: "minute", count: 1 },
     renderer: am5xy.AxisRendererX.new(root, {}),
     tooltip: am5.Tooltip.new(root, {})
 }));
@@ -94,10 +94,18 @@ let getData = (device, dstart, dend) => {
         // console.log(r.data);
         if (r.data.data !== "nodata") {
             let lmax = _.maxBy(r.data, 'lmax');
-            console.log(lmax);
-            console.log(r.data);
+            // console.log(lmax.dt);
+            // console.log(r.data);
+            // var dateString = moment.unix(lmax).format("MM/DD/YYYY");
+            // console.log(dateString);
+            let dt = new Date(lmax.dt).toLocaleTimeString("th-TH")
+            let dd = new Date(lmax.dt).toLocaleDateString("th-TH")
+            // console.log(dd, dt);
             document.getElementById("lmax").innerHTML = lmax.lmax;
-            document.getElementById("ldate").innerHTML = lmax.dt;
+            document.getElementById("ldate").innerHTML = ` ${dd} ${dt}`;
+
+            // let ndd = Object.fromEntries(Object.entries(lmax.dt).map(([k, v]) => ([k, new Date(lmax.dt).toLocaleDateString("th-TH")])))
+            // console.log(ndd);
             chart5(r.data)
         } else {
             document.getElementById("deviceNodata").innerHTML = device

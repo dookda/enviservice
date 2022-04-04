@@ -228,6 +228,7 @@ app.post("/api/deletefixed", (req, res) => {
 
 app.post("/api/iotdata", async (req, res) => {
     let { device, dstart, dend } = req.body;
+    console.log(device, dstart, dend);
     const url = `http://envirservice.net/api/v1/reports/logs?device_id=${device}&begin_date=${dstart}&end_date=${dend}`;
     axios.get(url).then(async (r) => {
         if (r.data.data.length > 0) {
