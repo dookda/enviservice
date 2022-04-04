@@ -14,7 +14,6 @@ function initializeLiff() {
 var url = 'https://rti2dss.com/p3510';
 // var url = 'https://1b02-49-230-241-158.ngrok.io';
 
-
 let gotoOwnerPost = () => {
     location.href = "./../report_owner/index.html";
 }
@@ -24,8 +23,6 @@ async function getUserid() {
     document.getElementById("usrid").value = await profile.userId;
     document.getElementById("profile").src = await profile.pictureUrl;
     document.getElementById("displayName").innerText = await profile.displayName;
-    // document.getElementById("email").value = await liff.getDecodedIDToken().email;
-    // console.log(profile);
     deviceList()
 }
 
@@ -51,9 +48,14 @@ var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
     tooltip: am5.Tooltip.new(root, {})
 }));
 
+xAxis.children.push(am5.Label.new(root, { text: "วัน เวลา", x: am5.p50, centerX: am5.p50, fontFamily: 'Kanit' }));
+
 var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
     renderer: am5xy.AxisRendererY.new(root, {})
 }));
+
+yAxis.children.moveValue(am5.Label.new(root, { text: "ความดัง (dB)", rotation: -90, y: am5.p50, centerX: am5.p50, fontFamily: 'Kanit' }), 0);
+
 var series = chart.series.push(am5xy.LineSeries.new(root, {
     name: "Series",
     xAxis: xAxis,
@@ -91,21 +93,12 @@ let chart5 = (data) => {
 let getData = (device, dstart, dend) => {
     // console.log(dstart, dend);
     axios.post(url + '/api/iotdata', { device, dstart, dend }).then(r => {
-        // console.log(r.data);
         if (r.data.data !== "nodata") {
             let lmax = _.maxBy(r.data, 'lmax');
-            // console.log(lmax.dt);
-            // console.log(r.data);
-            // var dateString = moment.unix(lmax).format("MM/DD/YYYY");
-            // console.log(dateString);
-            let dt = new Date(lmax.dt).toLocaleTimeString("th-TH")
-            let dd = new Date(lmax.dt).toLocaleDateString("th-TH")
-            // console.log(dd, dt);
+            let dt = moment(lmax.dt).subtract(7, 'hours').format('YYYY-MM-DD HH:mm:ss')
             document.getElementById("lmax").innerHTML = lmax.lmax;
-            document.getElementById("ldate").innerHTML = ` ${dd} ${dt}`;
+            document.getElementById("ldate").innerHTML = dt;
 
-            // let ndd = Object.fromEntries(Object.entries(lmax.dt).map(([k, v]) => ([k, new Date(lmax.dt).toLocaleDateString("th-TH")])))
-            // console.log(ndd);
             chart5(r.data)
         } else {
             document.getElementById("deviceNodata").innerHTML = device

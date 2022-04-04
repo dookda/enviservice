@@ -234,11 +234,9 @@ app.post("/api/iotdata", async (req, res) => {
         if (r.data.data.length > 0) {
             let dat = [];
             r.data.data.map(i => {
-                // let d = new Date(i.event);
-                // console.log(i.event);
                 dat.push({
                     // dt: `${d.getFullYear()}-${d.getMonth()}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
-                    dt: i.event,
+                    dt: moment(i.event).format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]'),
                     lmax: Number(i.data.split(",")[10])
                 })
             });
@@ -295,11 +293,9 @@ app.post("/api/updatevdo", async (req, res) => {
 });
 
 let notify = (device, userid) => {
-    let dend = moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
-    let dstart = moment().subtract(15, 'minute').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
-    // console.log(dend, dstart);
+    let dend = moment().subtract(7, 'hours').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
+    let dstart = moment().subtract(7, 'hours').subtract(15, 'minute').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
     axios.get(`http://envirservice.net/api/v1/reports/logs?device_id=${device}&begin_date=${dstart}&end_date=${dend}`).then(async (r) => {
-        // console.log(r.data);
         if (r.data.data.length > 0) {
             r.data.data.map(i => {
                 if (Number(i.data.split(",")[10]) >= 90) {

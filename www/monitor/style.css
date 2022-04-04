@@ -1,16 +1,20 @@
-body{
+body {
     font-family: 'Kanit', sans-serif;
     background-color: #f8f9fa !important;
     box-sizing: 0;
 }
 
-.f18{
+.f18 {
     font-size: 18px;
 }
 
-.img-right{
-    float:right;
-    display:block;
+.f28 {
+    font-size: 28px;
+}
+
+.img-right {
+    float: right;
+    display: block;
 }
 
 #chartdiv {
@@ -19,6 +23,6 @@ body{
 }
 
 .py-5 {
-    padding-top: 5rem!important;
-    padding-bottom: 5rem!important;
+    padding-top: 5rem !important;
+    padding-bottom: 5rem !important;
 }
