@@ -299,9 +299,10 @@ let notify = (device, userid) => {
         if (r.data.data.length > 0) {
             r.data.data.map(i => {
                 if (Number(i.data.split(",")[10]) >= 90) {
+                    let dd = moment(i.event).format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]'),
                     const msg = {
                         "type": "text",
-                        "text": `$ อุปกรณ์ตัวที่ ${device} ความดังของเสียงวัดได้ ${Number(i.data.split(",")[10])} dB เวลา ${i.event} เข้าดูรายละเอียดข้อมูลที่ https://liff.line.me/1656934660-QndaYdr0`,
+                        "text": `$ อุปกรณ์ตัวที่ ${device} ความดังของเสียงวัดได้ ${Number(i.data.split(",")[10])} dB เวลา ${dd} เข้าดูรายละเอียดข้อมูลที่ https://envirservice.co.th/monitor/index.html`,
                         "emojis": [
                             {
                                 "index": 0,
