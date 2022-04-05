@@ -11,8 +11,8 @@ function initializeLiff() {
         console.log(err);
     });
 }
-// var url = 'https://rti2dss.com/p3510';
-var url = 'https://57a3-202-28-250-95.ngrok.io';
+var url = 'https://rti2dss.com/p3510';
+// var url = 'https://57a3-202-28-250-95.ngrok.io';
 
 let gotoOwnerPost = () => {
     location.href = "./../report_owner/index.html";
@@ -95,7 +95,7 @@ let getData = (device, dstart, dend) => {
     axios.post(url + '/api/iotdata', { device, dstart, dend }).then(r => {
         if (r.data.data !== "nodata") {
             let lmax = _.maxBy(r.data, 'lmax');
-            let dt = moment(lmax.dt).subtract(7, 'hours').format('YYYY-MM-DD HH:mm:ss')
+            let dt = moment(lmax.dt).format('DD-MM-YYYY HH:mm:ss')
             document.getElementById("lmax").innerHTML = lmax.lmax;
             document.getElementById("ldate").innerHTML = dt;
 

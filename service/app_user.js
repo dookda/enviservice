@@ -235,7 +235,7 @@ app.post("/api/iotdata", async (req, res) => {
         if (r.data.data.length > 0) {
             let dat = r.data.data.map(i => {
                 return {
-                    dt: moment(i.event).format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]'),
+                    dt: moment(i.event).subtract(7, 'hours').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]'),
                     lmax: Number(i.data.split(",")[10])
                 }
             });
@@ -298,13 +298,13 @@ let notify = (device, userid) => {
 
             let dat = await r.data.data.map(i => {
                 return {
-                    dt: moment(i.event).format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]'),
+                    dt: moment(i.event).format('DD-MM-YYYY HH:mm:ss'),
                     lmax: Number(i.data.split(",")[10])
                 }
             })
 
             let lmax = _.maxBy(dat, 'lmax');
-            if (lmax.lmax >= 50) {
+            if (lmax.lmax >= 90) {
                 const msg = {
                     "type": "text",
                     "text": `$ อุปกรณ์ตัวที่ ${device} ความดังของเสียงวัดได้ ${lmax.lmax} dB เวลา ${lmax.dt} เข้าดูรายละเอียดข้อมูลที่ https://envirservice.co.th/monitor/index.html`,
