@@ -11,8 +11,8 @@ function initializeLiff() {
         console.log(err);
     });
 }
-var url = 'https://rti2dss.com/p3510';
-// var url = 'https://1b02-49-230-241-158.ngrok.io';
+// var url = 'https://rti2dss.com/p3510';
+var url = 'https://57a3-202-28-250-95.ngrok.io';
 
 let gotoOwnerPost = () => {
     location.href = "./../report_owner/index.html";

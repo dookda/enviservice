@@ -2,6 +2,7 @@ const { default: axios } = require('axios');
 const express = require('express');
 const moment = require('moment');
 const app = express.Router();
+const _ = require('lodash');
 
 const con = require("./db");
 const db = con.db;
@@ -228,17 +229,15 @@ app.post("/api/deletefixed", (req, res) => {
 
 app.post("/api/iotdata", async (req, res) => {
     let { device, dstart, dend } = req.body;
-    console.log(device, dstart, dend);
+    // console.log(device, dstart, dend);
     const url = `http://envirservice.net/api/v1/reports/logs?device_id=${device}&begin_date=${dstart}&end_date=${dend}`;
     axios.get(url).then(async (r) => {
         if (r.data.data.length > 0) {
-            let dat = [];
-            r.data.data.map(i => {
-                dat.push({
-                    // dt: `${d.getFullYear()}-${d.getMonth()}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+            let dat = r.data.data.map(i => {
+                return {
                     dt: moment(i.event).format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]'),
                     lmax: Number(i.data.split(",")[10])
-                })
+                }
             });
             await res.status(200).json(dat);
         } else {
@@ -279,10 +278,9 @@ app.get('/api/selectvdo', (req, res) => {
     });
 });
 
-
 app.post("/api/updatevdo", async (req, res) => {
     const { gid, vdo } = req.body;
-    console.log(gid, vdo);
+    // console.log(gid, vdo);
     let sql = `UPDATE vdo SET vdo='${vdo}' WHERE gid='${gid}'`;
     // console.log(sql);
     await db.query(sql).then(
@@ -294,26 +292,32 @@ app.post("/api/updatevdo", async (req, res) => {
 
 let notify = (device, userid) => {
     let dend = moment().subtract(7, 'hours').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
-    let dstart = moment().subtract(7, 'hours').subtract(15, 'minute').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
+    let dstart = moment().subtract(7, 'hours').subtract(5, 'minute').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')
     axios.get(`http://envirservice.net/api/v1/reports/logs?device_id=${device}&begin_date=${dstart}&end_date=${dend}`).then(async (r) => {
         if (r.data.data.length > 0) {
-            r.data.data.map(i => {
-                if (Number(i.data.split(",")[10]) >= 90) {
-                    let dd = moment(i.event).format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]'),
-                    const msg = {
-                        "type": "text",
-                        "text": `$ อุปกรณ์ตัวที่ ${device} ความดังของเสียงวัดได้ ${Number(i.data.split(",")[10])} dB เวลา ${dd} เข้าดูรายละเอียดข้อมูลที่ https://envirservice.co.th/monitor/index.html`,
-                        "emojis": [
-                            {
-                                "index": 0,
-                                "productId": "5ac1bfd5040ab15980c9b435",
-                                "emojiId": "174"
-                            }
-                        ]
-                    }
-                    client.pushMessage(userid, msg)
+
+            let dat = await r.data.data.map(i => {
+                return {
+                    dt: moment(i.event).format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]'),
+                    lmax: Number(i.data.split(",")[10])
                 }
-            });
+            })
+
+            let lmax = _.maxBy(dat, 'lmax');
+            if (lmax.lmax >= 50) {
+                const msg = {
+                    "type": "text",
+                    "text": `$ อุปกรณ์ตัวที่ ${device} ความดังของเสียงวัดได้ ${lmax.lmax} dB เวลา ${lmax.dt} เข้าดูรายละเอียดข้อมูลที่ https://envirservice.co.th/monitor/index.html`,
+                    "emojis": [
+                        {
+                            "index": 0,
+                            "productId": "5ac1bfd5040ab15980c9b435",
+                            "emojiId": "174"
+                        }
+                    ]
+                }
+                client.pushMessage(userid, msg)
+            }
         } else {
             console.log(r.data.data);
         }
@@ -331,7 +335,7 @@ const getDevice = async () => {
 
 setInterval(i => {
     getDevice();
-}, 90000)
+}, 300000)
 
 app.get("/api/pushmsg", (req, res) => {
     const msg = {
