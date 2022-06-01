@@ -1,7 +1,7 @@
 <?php
-$mydatabase="cp897163_envirservi_web";
+$mydatabase="envirservi_web";
 date_default_timezone_set('Asia/Bangkok');
-$ConnectDB = mysqli_connect("localhost","cp897163_mysql","3wV08KgHc",$mydatabase) ;
+$ConnectDB = mysqli_connect("localhost","envirservi_web","3wV08KgHc",$mydatabase) ;
 function quote($post){
 return mysqli_real_escape_string($GLOBALS['ConnectDB'],$post);
 }
