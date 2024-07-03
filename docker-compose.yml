@@ -1,0 +1,17 @@
+services:
+  node:
+    image: node:latest
+    container_name: node
+    volumes:
+      - ./node:/usr/src/app
+    working_dir: /usr/src/app
+    command: sh -c "npm i && npm i -g nodemon && nodemon"
+    ports:
+      - "3000:3000"
+  php:
+    image: php:7.4-apache
+    container_name: php_web
+    volumes:
+      - ./php:/var/www/html
+    ports:
+      - "8000:80"

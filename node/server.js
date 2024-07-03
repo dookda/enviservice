@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const port = 3510;
 
 
 const bodyParser = require('body-parser');
@@ -36,6 +35,7 @@ app.use(bodyParser.urlencoded({
 
 app.use('/', express.static('www'))
 
+const port = 3000;
 app.listen(port, () => {
     console.log(`http://localhost:${port}`);
 })
